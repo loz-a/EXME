@@ -1,0 +1,3 @@
+workspace write works
+
+Привіт медвід

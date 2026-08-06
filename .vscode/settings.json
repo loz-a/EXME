@@ -1,0 +1,11 @@
+{
+    "intelephense.phpdoc.propertyTemplate": {
+
+        "summary": "$1",
+        "tags": [
+            "@var ${1:$SYMBOL_TYPE}"
+        ]
+    },    
+    "php.validate.executablePath": "/usr/bin/php",
+    "editor.hover.enabled": "on"
+}

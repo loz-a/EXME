@@ -1,0 +1,21 @@
+/.phpcs-cache
+/.psalm-cache
+/.phpunit.cache
+/clover.xml
+/coveralls-upload.json
+/phpunit.xml
+/vendor/
+/.storage/
+
+# Локальні змінні середовища та секрети
+.env
+.env.*
+!.env.example
+
+.docker/.env
+.docker/.env.*
+!.docker/.env.example
+
+# Локальні TLS-сертифікати й приватні ключі
+.docker/app/apache/ssl/*.pem
+.docker/app/apache/ssl/*.key

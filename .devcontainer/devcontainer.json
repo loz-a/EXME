@@ -1,0 +1,21 @@
+{
+  "name": "PHP-ExME",
+  "dockerComposeFile": "../.docker/docker-compose.yaml",
+  "service": "exme_app",
+  "workspaceFolder": "/var/www/current",
+  "remoteUser": "www-data",
+
+  "postCreateCommand": "mkdir -p ~/.codex && (test -f ~/.codex/config.toml || cp .codex/config.toml ~/.codex/config.toml)",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "xdebug.php-debug",
+        "openai.chatgpt"
+      ]
+    }
+  },
+
+  "shutdownAction": "stopCompose"
+}

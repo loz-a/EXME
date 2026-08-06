@@ -1,0 +1,34 @@
+services:
+  exme_app:
+    container_name: exme_app
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 512
+    build: 
+      context: .
+      dockerfile: ./app/Dockerfile
+      args:
+        USER_ID: ${USER_ID:-1000}
+        GROUP_ID: ${GROUP_ID:-1000}
+        PHP_VERSION: ${PHP_VERSION}
+        CONTAINER_SRC_PATH: ${CONTAINER_SRC_PATH}        
+        APACHE_SERVER_NAME: ${APACHE_SERVER_NAME}
+        APACHE_SERVER_ALIAS: ${APACHE_SERVER_ALIAS}
+    volumes:
+      - ../:${CONTAINER_SRC_PATH}
+      # - ${HOME}/.composer:/.composer
+    environment:
+      COMPOSER_ALLOW_SUPERUSER: 1
+      COMPOSER_ALLOW_XDEBUG: 1
+      COMPOSER_DISABLE_XDEBUG_WARN: 1
+    ports:
+      - ${APACHE_HTTP_PORT:-8080}:80
+      - ${APACHE_HTTPS_PORT:-443}:443
+    networks:
+      - exme_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  
+networks:
+  exme_network:    

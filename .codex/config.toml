@@ -1,0 +1,13 @@
+# Codex може записувати лише в межах відкритого проєкту.
+sandbox_mode = "workspace-write"
+
+# Не дозволяти мережеві запити від Codex за замовчуванням.
+# Тимчасово змінюйте на true лише коли це дійсно потрібно.
+sandbox_workspace_write.network_access = false
+
+# Залишити запит підтвердження для потенційно ризикових команд.
+approval_policy = "on-request"
+
+# Не передавати агенту зайві змінні середовища.
+[shell_environment_policy]
+include_only = ["PATH", "HOME"]
