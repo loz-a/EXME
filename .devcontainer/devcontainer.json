@@ -12,7 +12,7 @@
       "extensions": [
         "bmewburn.vscode-intelephense-client",
         "xdebug.php-debug",
-        "openai.chatgpt"
+        "openai.codex"
       ]
     }
   },
