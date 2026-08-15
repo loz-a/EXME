@@ -1,0 +1,19 @@
+{
+    "name": "loz/exme",
+    "description": "extended markup expressions",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "EXME\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EXME\\Tests\\": "tests/"
+        }
+    }
+}
