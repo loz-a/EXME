@@ -1,6 +1,10 @@
 # EXME Library
 
-EXME - Extended Markup Expressions. A PHP library designed to provide a simple and extensible foundation for using template components inspired by PHP RFC: Native Markup Expressions
+EXME - Expandable Markup Expressions. A PHP library designed to provide a simple and extensible foundation for using template components inspired by PHP RFC: Native Markup Expressions https://wiki.php.net/rfc/native_markup_expressions and preprocess-pre-phpx 
+ - https://github.com/assertchris/preprocess-pre-phpx 
+ - https://github.com/assertchris/preprocess-pre-phpx-html 
+ - https://github.com/assertchris/preprocess-example-phpx 
+ - https://github.com/assertchris/preprocess-example-phpx-live
 
 ## Requirements
 
@@ -12,7 +16,7 @@ EXME - Extended Markup Expressions. A PHP library designed to provide a simple a
 Install the library using Composer:
 
 ```bash
-composer require loz/exme
+composer require loz-a/exme
 ```
 
 Composer will automatically configure PSR-4 autoloading for the library.

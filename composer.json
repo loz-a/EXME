@@ -15,5 +15,8 @@
         "psr-4": {
             "EXME\\Tests\\": "tests/"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^13.3"
     }
 }

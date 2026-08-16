@@ -12,7 +12,9 @@
       "extensions": [
         "bmewburn.vscode-intelephense-client",
         "xdebug.php-debug",
-        "openai.codex"
+        "openai.codex",
+        "bmewburn.vscode-intelephense-client",
+        "mehedidracula.php-namespace-resolver"
       ]
     }
   },
