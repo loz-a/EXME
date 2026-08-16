@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace EXME\Tests\Component;
 
-final class Greeting
+use EXME\Component\Contract\ComponentInterface;
+
+final class Greeting implements ComponentInterface
 {
     public function __construct(
         public readonly string $name,
