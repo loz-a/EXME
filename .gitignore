@@ -7,6 +7,7 @@
 /vendor/
 /.storage/
 /.history/
+/.phpunit.result.cache
 
 # Локальні змінні середовища та секрети
 .env
