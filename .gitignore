@@ -6,6 +6,7 @@
 /phpunit.xml
 /vendor/
 /.storage/
+/.history/
 
 # Локальні змінні середовища та секрети
 .env

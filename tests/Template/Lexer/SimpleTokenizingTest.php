@@ -3,7 +3,7 @@
 
 declare(strict_types=1);
 
-namespace EXMETests;
+namespace EXMETests\Template\Lexer;
 
 use EXME\Template\Lexer\Lexer;
 use EXME\Template\Lexer\TokenType;
