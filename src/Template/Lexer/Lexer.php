@@ -64,7 +64,7 @@ final class Lexer
     {
         $position = $this->position;
 
-        $this->next();
+        $this->moveNext();
 
         return new Token(
             type: TokenType::TAG_OPEN,
@@ -77,7 +77,7 @@ final class Lexer
     {
         $position = $this->position;
 
-        $this->next();
+        $this->moveNext();
 
         if ($this->isAtEnd() || $this->current() !== '>') {
             throw new \RuntimeException(
@@ -88,7 +88,7 @@ final class Lexer
             );
         }
 
-        $this->next();
+        $this->moveNext();
 
         return new Token(
             type: TokenType::TAG_SELF_CLOSE,
@@ -101,7 +101,7 @@ final class Lexer
     {
         $position = $this->position;
 
-        $this->next();
+        $this->moveNext();
 
         return new Token(
             type: TokenType::EQUALS,
@@ -114,12 +114,12 @@ final class Lexer
     {
         $position = $this->position;
 
-        $this->next();
+        $this->moveNext();
 
         $start = $this->position;
 
         while (!$this->isAtEnd() && $this->current() !== '"') {
-            $this->next();
+            $this->moveNext();
         }
 
         if ($this->isAtEnd()) {
@@ -137,7 +137,7 @@ final class Lexer
             $this->position - $start,
         );
 
-        $this->next();
+        $this->moveNext();
 
         return new Token(
             type: TokenType::STRING,
@@ -155,7 +155,7 @@ final class Lexer
             !$this->isAtEnd()
             && $this->isIdentifierPart($this->current())
         ) {
-            $this->next();
+            $this->moveNext();
         }
 
         return new Token(
@@ -175,7 +175,7 @@ final class Lexer
             !$this->isAtEnd()
             && ctype_space($this->current())
         ) {
-            $this->next();
+            $this->moveNext();
         }
     }
 
@@ -196,7 +196,7 @@ final class Lexer
         return $this->source[$this->position];
     }
 
-    private function next(): void
+    private function moveNext(): void
     {
         $this->position++;
     }
