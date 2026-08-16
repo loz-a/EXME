@@ -36,13 +36,12 @@ final class Parser
 
         while (!$this->isAtEnd() && $this->current()->type !== TokenType::TAG_SELF_CLOSE) {
             $attribute = $this->expect(TokenType::IDENTIFIER);
-            $attributeName = $attribute->value;
 
-            if (array_key_exists($attributeName, $attributes)) {
+            if (array_key_exists($attribute->value, $attributes)) {
                 throw new \RuntimeException(
                     sprintf(
                         'Duplicate attribute "%s" at position %d',
-                        $attributeName,
+                        $attribute->value,
                         $attribute->position,
                     ),
                 );
@@ -52,7 +51,7 @@ final class Parser
 
             $attributeValue = $this->expect(TokenType::STRING)->value;
 
-            $attributes[$attributeName] = $attributeValue;
+            $attributes[$attribute->value] = $attributeValue;
         }
 
         $this->expect(TokenType::TAG_SELF_CLOSE);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EXMETests\Template\Parser;
+namespace EXME\Tests\Template\Parser;
 
 use EXME\Template\Lexer\Lexer;
 use EXME\Template\Parser\ComponentNode;

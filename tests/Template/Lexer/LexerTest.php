@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EXMETests\Template\Lexer;
+namespace EXME\Tests\Template\Lexer;
 
 use EXME\Template\Lexer\Lexer;
 use EXME\Template\Lexer\Token;
