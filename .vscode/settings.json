@@ -6,6 +6,6 @@
             "@var ${1:$SYMBOL_TYPE}"
         ]
     },    
-    "php.validate.executablePath": "/usr/bin/php",
+    "php.validate.executablePath": "/usr/local/bin/php",
     "editor.hover.enabled": "on"
 }

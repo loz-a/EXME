@@ -14,7 +14,7 @@
         "xdebug.php-debug",
         "openai.codex",
         "bmewburn.vscode-intelephense-client",
-        "mehedidracula.php-namespace-resolver"
+        "mehedidracula.php-namespace-resolver",
       ]
     }
   },

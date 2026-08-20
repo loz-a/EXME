@@ -6,10 +6,16 @@ namespace EXME\Template\Lexer;
 
 enum TokenType: string
 {
-    case TAG_OPEN = 'tag_open';
-    case TAG_SELF_CLOSE = 'tag_self_close';
-
+    case COMPONENT_OPEN = 'component_open';
+    case COMPONENT_CLOSE = 'component_close';
+    case COMPONENT_SELF_CLOSE = 'component_self_close';
+    
     case IDENTIFIER = 'identifier';
     case EQUALS = 'equals';
-    case STRING = 'string';
+    case TEXT = 'text';
+    
+    case HTML = 'html';
+    case PHP = 'php';
+    case PHP_EXPRESSION = 'php_expression';
+
 }

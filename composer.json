@@ -16,6 +16,10 @@
             "EXME\\Tests\\": "tests/"
         }
     },
+    "scripts": {
+        "test": "@php vendor/bin/phpunit",
+        "xdebug": "XDEBUG_MODE=debug XDEBUG_TRIGGER=1 XDEBUG_CONFIG=\"idekey=XDEBUG_VSCODE\" php vendor/bin/phpunit"
+    },
     "require-dev": {
         "phpunit/phpunit": "^13.3",
         "phpstan/phpstan": "^2.2"

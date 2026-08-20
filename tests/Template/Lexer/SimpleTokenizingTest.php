@@ -13,39 +13,37 @@ final class SimpleTokenizingTest extends TestCase
 {
     public function testTokenizeComponent(): void
     {
-        $lexer = new Lexer(
-            '<Greeting name="Rasmus" type="guest" />'
+        $tokens = (new Lexer())->tokenize(
+            '<Greeting name="Rasmus" type="guest" />',
         );
-
-        $tokens = $lexer->tokenize();
 
         self::assertCount(9, $tokens);
 
-        self::assertSame(TokenType::TAG_OPEN, $tokens[0]->type);
-        self::assertSame('<', $tokens[0]->value);
+        self::assertSame(TokenType::COMPONENT_OPEN, $tokens[0]->type);
+        self::assertSame('<', $tokens[0]->text);
 
         self::assertSame(TokenType::IDENTIFIER, $tokens[1]->type);
-        self::assertSame('Greeting', $tokens[1]->value);
+        self::assertSame('Greeting', $tokens[1]->text);
 
         self::assertSame(TokenType::IDENTIFIER, $tokens[2]->type);
-        self::assertSame('name', $tokens[2]->value);
+        self::assertSame('name', $tokens[2]->text);
 
         self::assertSame(TokenType::EQUALS, $tokens[3]->type);
-        self::assertSame('=', $tokens[3]->value);
+        self::assertSame('=', $tokens[3]->text);
 
-        self::assertSame(TokenType::STRING, $tokens[4]->type);
-        self::assertSame('Rasmus', $tokens[4]->value);
+        self::assertSame(TokenType::TEXT, $tokens[4]->type);
+        self::assertSame('Rasmus', $tokens[4]->text);
 
         self::assertSame(TokenType::IDENTIFIER, $tokens[5]->type);
-        self::assertSame('type', $tokens[5]->value);
+        self::assertSame('type', $tokens[5]->text);
 
         self::assertSame(TokenType::EQUALS, $tokens[6]->type);
-        self::assertSame('=', $tokens[6]->value);
+        self::assertSame('=', $tokens[6]->text);
 
-        self::assertSame(TokenType::STRING, $tokens[7]->type);
-        self::assertSame('guest', $tokens[7]->value);
+        self::assertSame(TokenType::TEXT, $tokens[7]->type);
+        self::assertSame('guest', $tokens[7]->text);
 
-        self::assertSame(TokenType::TAG_SELF_CLOSE, $tokens[8]->type);
-        self::assertSame('/>', $tokens[8]->value);
+        self::assertSame(TokenType::COMPONENT_SELF_CLOSE, $tokens[8]->type);
+        self::assertSame('/>', $tokens[8]->text);
     }
 }

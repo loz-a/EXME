@@ -59,8 +59,27 @@ composer install
 Run the test suite with PHPUnit:
 
 ```bash
-vendor/bin/phpunit
+composer test
 ```
+
+### Debugging PHPUnit from the terminal
+
+Xdebug is configured for port `9003`. In VS Code, start **Listen for Xdebug**
+from the Run and Debug panel, set a breakpoint (or add `xdebug_break()`
+temporarily), then run this in the integrated terminal:
+
+```bash
+composer test:debug
+```
+
+To debug only one test, pass PHPUnit arguments after `--`:
+
+```bash
+composer test:debug -- --filter testParsesComponentWithoutAttributes
+```
+
+The listener maps `/var/www/current` in the PHP environment to the opened
+workspace, so breakpoints work when the tests run in the project container.
 
 ## Project Structure
 

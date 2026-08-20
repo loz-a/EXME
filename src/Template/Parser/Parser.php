@@ -26,50 +26,51 @@ final class Parser
 
     public function parse(): ComponentNode
     {
-        $this->position = 0;
+        // $this->position = 0;
 
-        $this->expect(TokenType::TAG_OPEN);
+        // $this->expect(TokenType::TAG_OPEN);
 
-        $name = $this->expect(TokenType::IDENTIFIER)->value;
+        // $name = $this->expect(TokenType::IDENTIFIER)->value;
+        // $classDefinition = $this->runtimeDefinition->getClassDefinition($name);
 
-        $attributes = [];
+        // $attributes = [];
 
-        while (!$this->isAtEnd() && $this->current()->type !== TokenType::TAG_SELF_CLOSE) {
-            $attribute = $this->expect(TokenType::IDENTIFIER);
+        // while (!$this->isAtEnd() && $this->current()->type !== TokenType::TAG_SELF_CLOSE) {
+        //     $attribute = $this->expect(TokenType::IDENTIFIER);
 
-            if (array_key_exists($attribute->value, $attributes)) {
-                throw new \RuntimeException(
-                    sprintf(
-                        'Duplicate attribute "%s" at position %d',
-                        $attribute->value,
-                        $attribute->position,
-                    ),
-                );
-            }
+        //     if (array_key_exists($attribute->value, $attributes)) {
+        //         throw new \RuntimeException(
+        //             sprintf(
+        //                 'Duplicate attribute "%s" at position %d',
+        //                 $attribute->value,
+        //                 $attribute->position,
+        //             ),
+        //         );
+        //     }
 
-            $this->expect(TokenType::EQUALS);
+        //     $this->expect(TokenType::EQUALS);
 
-            $attributeValue = $this->expect(TokenType::STRING)->value;
+        //     $attributeValue = $this->expect(TokenType::STRING)->value;
 
-            $attributes[$attribute->value] = $attributeValue;
-        }
+        //     $attributes[$attribute->value] = $attributeValue;
+        // }
 
-        $this->expect(TokenType::TAG_SELF_CLOSE);
+        // $this->expect(TokenType::TAG_SELF_CLOSE);
 
-        if (!$this->isAtEnd()) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Unexpected token "%s" at position %d',
-                    $this->current()->value,
-                    $this->current()->position,
-                ),
-            );
-        }
+        // if (!$this->isAtEnd()) {
+        //     throw new \RuntimeException(
+        //         sprintf(
+        //             'Unexpected token "%s" at position %d',
+        //             $this->current()->value,
+        //             $this->current()->position,
+        //         ),
+        //     );
+        // }
 
-        return new ComponentNode(
-            name: $name,
-            attributes: $attributes,
-        );
+        // return new ComponentNode(
+        //     name: $name,
+        //     attributes: $attributes,
+        // );
     }
 
     private function expect(TokenType $type): Token
