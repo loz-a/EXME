@@ -6,14 +6,23 @@ declare(strict_types=1);
 namespace EXME\Tests\Template\Lexer;
 
 use EXME\Template\Lexer\Lexer;
+use EXME\Template\Lexer\LexerFactory;
 use EXME\Template\Lexer\TokenType;
 use PHPUnit\Framework\TestCase;
 
 final class SimpleTokenizingTest extends TestCase
 {
+    private Lexer $lexer;
+
+    public function setUp(): void
+    {
+        $lexerFactory = new LexerFactory();
+        $this->lexer = $lexerFactory->create();
+    }
+    
     public function testTokenizeComponent(): void
     {
-        $tokens = (new Lexer())->tokenize(
+        $tokens = $this->lexer->tokenize(
             '<Greeting name="Rasmus" type="guest" />',
         );
 

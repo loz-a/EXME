@@ -10,6 +10,8 @@ use EXME\Template\Lexer\Tokenizer\ComponentSelfCloseTokenizer;
 use EXME\Template\Lexer\Tokenizer\ComponentTokenizer;
 use EXME\Template\Lexer\Tokenizer\EqualsTokenizer;
 use EXME\Template\Lexer\Tokenizer\IdentifierTokenizer;
+use EXME\Template\Lexer\Tokenizer\PhpExpressionTokenizer;
+use EXME\Template\Lexer\Tokenizer\PhpTokenizer;
 use EXME\Template\Lexer\Tokenizer\StringTokenizer;
 use EXME\Template\Lexer\Tokenizer\TokenizerChain;
 
@@ -24,6 +26,7 @@ final class LexerFactory
             new ComponentTokenizer(),
             new ComponentSelfCloseTokenizer(),
             new ComponentCloseTokenizer(),
+            
             new EqualsTokenizer(),
             new StringTokenizer(),
             new IdentifierTokenizer(),

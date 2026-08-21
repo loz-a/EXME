@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EXME\Tests\Template\Lexer;
 
 use EXME\Template\Lexer\Lexer;
+use EXME\Template\Lexer\LexerFactory;
 use EXME\Template\Lexer\Token;
 use EXME\Template\Lexer\TokenType;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -12,11 +13,19 @@ use PHPUnit\Framework\TestCase;
 
 final class LexerTest extends TestCase
 {
+    private Lexer $lexer;
+
+    public function setUp(): void
+    {
+        $lexerFactory = new LexerFactory();
+        $this->lexer = $lexerFactory->create();
+    }
+
     /** @param list<array{TokenType, string}> $expectedTokens */
     #[DataProvider("templateProvider")]
     public function testTokenizesTemplates(string $template, array $expectedTokens): void
     {
-        $tokens = (new Lexer())->tokenize($template);
+        $tokens = $this->lexer->tokenize($template);
 
         self::assertSame($expectedTokens, array_map(
             static fn (Token $token): array => [$token->type, $token->text],
@@ -49,8 +58,8 @@ final class LexerTest extends TestCase
     public function testRejectsInvalidTemplates(string $template, string $message): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage($message);
-        (new Lexer())->tokenize($template);
+        $this->expectExceptionMessageIsOrContains($message);
+        $this->lexer->tokenize($template);
     }
 
     /** @return iterable<string, array{string, string}> */

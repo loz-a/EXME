@@ -52,8 +52,5 @@ final class PhpTokenizer implements TokenizerInterface
 
             $context->moveNext();
         }
-
-        throw new \RuntimeException(
-            sprintf('Unterminated PHP block at position %d', $context->position));
     }
 }
