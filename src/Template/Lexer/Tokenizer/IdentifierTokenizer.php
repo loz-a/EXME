@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EXME\Template\Lexer\Tokenizer;
 
 use EXME\Template\Lexer\LexerContext;
+use EXME\Template\Lexer\LexerMode;
 use EXME\Template\Lexer\Token;
 use EXME\Template\Lexer\TokenType;
 use EXME\Template\Lexer\Tokenizer\Contract\TokenizerInterface;
@@ -13,9 +14,8 @@ final class IdentifierTokenizer implements TokenizerInterface
 {
     public function supports(LexerContext $context): bool
     {
-        $char = $context->current();
-
-        return $char !== null && (ctype_alpha($char) || $char === '_');
+        return $context->mode !== LexerMode::COMPONENT
+            && $this->isIdentifierStart($context->current());
     }
 
     public function tokenize(LexerContext $context): Token
@@ -24,10 +24,7 @@ final class IdentifierTokenizer implements TokenizerInterface
         $start = $position;
 
         while (!$context->isAtEnd()) {
-            $char = $context->current();
-            $forbiddenChar = !ctype_alnum($char) && $char !== '_' && $char !== '-';
-
-            if ($char === null || $forbiddenChar) {
+            if (!$this->isIdentifierPart($context->current())) {
                 break;
             }
 
@@ -43,5 +40,15 @@ final class IdentifierTokenizer implements TokenizerInterface
             ),
             position: $position,
         );
+    }
+
+    private function isIdentifierStart(string $char): bool
+    {
+        return ctype_alpha($char) || $char === '_';
+    }
+
+    private function isIdentifierPart(string $char): bool
+    {
+        return ctype_alnum($char) || $char === '_' || $char === '-';
     }
 }
