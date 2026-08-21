@@ -14,7 +14,10 @@ final class PhpExpressionTokenizer implements TokenizerInterface
 {
     public function supports(LexerContext $context): bool
     {
-        return $context->mode === LexerMode::TEMPLATE 
+        $acceptableMode = $context->mode === LexerMode::TEMPLATE 
+            || $context->mode === LexerMode::COMPONENT; 
+
+        return $acceptableMode 
             && $context->startsWith('<?=');
     }
 

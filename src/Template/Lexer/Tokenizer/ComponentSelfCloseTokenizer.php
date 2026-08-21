@@ -15,8 +15,7 @@ final class ComponentSelfCloseTokenizer implements TokenizerInterface
     public function supports(LexerContext $context): bool
     {
         return $context->mode === LexerMode::COMPONENT 
-            && $context->current() === '/'
-            && $context->peek() === '>';
+            && $context->current() === '/';
     }
 
     public function tokenize(LexerContext $context): Token
@@ -31,6 +30,8 @@ final class ComponentSelfCloseTokenizer implements TokenizerInterface
         }
 
         $context->moveNext();
+
+        $context->mode = LexerMode::TEMPLATE;
 
         return new Token(
             type: TokenType::COMPONENT_SELF_CLOSE,

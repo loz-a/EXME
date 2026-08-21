@@ -26,7 +26,10 @@ final class StringTokenizer implements TokenizerInterface
 
         $start = $context->position;
 
-        while (!$context->isAtEnd() && $context->current() !== '"') {
+        while (!$context->isAtEnd() 
+            && $context->current() !== '"'
+            && !$context->startsWith('<?=')
+        ) {
             $context->moveNext();
         }
 
@@ -41,7 +44,9 @@ final class StringTokenizer implements TokenizerInterface
             $context->position - $start,
         );
 
-        $context->moveNext();
+        if (!empty($text)) {
+            $context->moveNext();
+        }
 
         return new Token(
             type: TokenType::TEXT,

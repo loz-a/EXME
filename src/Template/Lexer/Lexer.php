@@ -18,7 +18,11 @@ final class Lexer
         $tokens = [];
 
         while (!$context->isAtEnd()) {
-            $tokens[] = $this->chain->tokenize($context);
+            $token = $this->chain->tokenize($context);
+            
+            if (!$token->isEmpty()) {
+                $tokens[] = $token;
+            }
         }
 
         return $tokens;

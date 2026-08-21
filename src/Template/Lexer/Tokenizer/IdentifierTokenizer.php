@@ -14,7 +14,7 @@ final class IdentifierTokenizer implements TokenizerInterface
 {
     public function supports(LexerContext $context): bool
     {
-        return $context->mode !== LexerMode::COMPONENT
+        return $context->mode === LexerMode::COMPONENT
             && $this->isIdentifierStart($context->current());
     }
 

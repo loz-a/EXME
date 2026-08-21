@@ -24,6 +24,8 @@ final class ComponentCloseTokenizer implements TokenizerInterface
 
         $context->moveNext();
 
+        $context->mode = LexerMode::TEMPLATE;
+
         return new Token(
             type: TokenType::COMPONENT_CLOSE,
             text: '>',

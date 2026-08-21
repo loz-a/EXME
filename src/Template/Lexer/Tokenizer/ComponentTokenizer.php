@@ -25,6 +25,8 @@ final class ComponentTokenizer implements TokenizerInterface
 
         $context->moveNext();
 
+        $context->mode = LexerMode::COMPONENT;
+
         return new Token(
             type: TokenType::COMPONENT_OPEN,
             text: '<',
