@@ -9,6 +9,7 @@ final class LexerContext
     public function __construct(
         public readonly string $source,
         public int $position = 0,
+        public LexerMode $mode = LexerMode::TEMPLATE,
     ) {}
 
     public function current(): ?string

@@ -20,8 +20,6 @@ final class TokenizerChain
 
     public function tokenize(LexerContext $context): Token
     {
-        $context->skipWhitespace();
-
         foreach ($this->tokenizers as $tokenizer) {
             if (!$tokenizer->supports($context)) {
                 continue;
