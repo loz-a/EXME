@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace EXME\Template\Lexer\Tokenizer;
 
+use EXME\Template\Lexer\LexerContext;
 use EXME\Template\Lexer\Token;
 use EXME\Template\Lexer\Tokenizer\Contract\TokenizerInterface;
 use EXME\Template\Lexer\TokenType;
 
-class Tokenizer implements TokenizerInterface
+class DefaultTokenizer implements TokenizerInterface
 {
     private int $position = 0;
     private int $length;
@@ -21,7 +22,7 @@ class Tokenizer implements TokenizerInterface
     /**
      * @return list<Token>
      */
-    public function tokenize(): array
+    public function tokenize(LexerContext $context): array
     {
         $tokens = [];
 
@@ -73,7 +74,7 @@ class Tokenizer implements TokenizerInterface
         $this->moveNext();
 
         return new Token(
-            type: TokenType::TEXT,
+            type: TokenType::PHP,
             text: $text,
             position: $position,
         );
@@ -200,7 +201,7 @@ class Tokenizer implements TokenizerInterface
             return false;
         }
 
-        return '<?php' === substr($this->source, $this->position, $this->position + 4);
+        return '<?php' === substr($this->source, $this->position, 5);
     }
 
     private function isPhpEnd(string $char): bool
