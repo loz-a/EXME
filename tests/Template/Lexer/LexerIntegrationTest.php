@@ -106,4 +106,44 @@ final class LexerIntegrationTest extends TestCase
         self::assertSame(TokenType::COMPONENT_SELF_CLOSE, $token->type);
         self::assertSame(LexerMode::TEMPLATE, $context->mode);
     }
+
+    public function testTokenizesCompleteTemplateWithPhpExpression(): void
+    {
+        $source = <<<'PHP'
+            <?php if ($isAdmin): ?>
+                <a href="/login">Login</a>
+            <?php endif; ?>
+
+            <Greeting name="Hello <?= $name ?>!" />            
+            PHP;
+
+        $tokens = $this->lexer->tokenize($source);
+
+        self::assertSame(
+            [
+                [TokenType::PHP, ' if ($isAdmin): '],
+                [TokenType::TEXT, "\n  "],
+                [TokenType::HTML, '<a href="/login">' ],
+                [TokenType::TEXT, 'Login'],
+                [TokenType::HTML, '</a>'],
+                [TokenType::TEXT, "\n"],
+                [TokenType::PHP, ' endif; '],
+                [TokenType::COMPONENT_OPEN, '<'],
+                [TokenType::IDENTIFIER, 'Greeting'],
+                [TokenType::IDENTIFIER, 'name'],
+                [TokenType::EQUALS, '='],
+                [TokenType::TEXT, "Hello"],
+                [TokenType::PHP_EXPRESSION, ' $name '],
+                [TokenType::COMPONENT_SELF_CLOSE, '/>'],
+                [TokenType::TEXT, "\n"],
+            ],
+            array_map(
+                static fn ($token): array => [
+                    $token->type,
+                    $token->text,
+                ],
+                $tokens,
+            ),
+        );
+    }
 }

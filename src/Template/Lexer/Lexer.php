@@ -12,13 +12,23 @@ final class Lexer
         private TokenizerChain $chain,
     ) {}
 
-    public function tokenize(string $source): array
+    public function tokenize(string $source, int $position = 0): array
     {
-        $context = new LexerContext($source);
+        $context = new LexerContext(source: $source, position: $position);
         $tokens = [];
 
         while (!$context->isAtEnd()) {
             $token = $this->chain->tokenize($context);
+
+            if ($token->canTokenize) {
+                $childTokens = $this->tokenize($token->text);
+                $tokens = [ 
+                    ...$tokens, 
+                    ...$this->recalculateChildTokensPosition($childTokens, $token->position)
+                ];
+
+                continue;
+            }
             
             if (!$token->isEmpty()) {
                 $tokens[] = $token;
@@ -26,5 +36,22 @@ final class Lexer
         }
 
         return $tokens;
+    }
+
+    private function recalculateChildTokensPosition(array $tokens, int $startPos): array
+    {
+        $result = [];
+
+        $count = count($tokens);
+        for ($i = 0; $i < $count; $i++) {
+            $result[$i] = new Token(
+                type: $tokens[$i]->type,
+                text: $tokens[$i]->text,
+                position: $i === 0 ? $startPos : $tokens[$i]->position + $startPos,
+                canTokenize: $tokens[$i]->canTokenize,
+            ); 
+        }
+
+        return $result;
     }
 }

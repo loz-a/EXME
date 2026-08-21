@@ -13,6 +13,7 @@ final readonly class Token
         public TokenType $type,
         public string $text,
         public int $position,
+        public bool $canTokenize = false,
     ) {
     }
 
