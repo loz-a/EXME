@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EXME\Template\Lexer;
 
 use function strlen;
-use function trim;
 
 final readonly class Token
 {
@@ -19,6 +18,6 @@ final readonly class Token
 
     public function isEmpty(): bool
     {
-        return strlen(trim($this->text)) === 0;
+        return strlen($this->text) === 0;
     }
 }

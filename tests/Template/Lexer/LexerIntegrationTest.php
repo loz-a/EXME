@@ -59,7 +59,7 @@ final class LexerIntegrationTest extends TestCase
                 [TokenType::COMPONENT_SELF_CLOSE, '/>'],
                 [TokenType::TEXT, "\n\n"],
                 [TokenType::PHP, ' if ($isAdmin): '],
-                [TokenType::TEXT, "\n  "],
+                [TokenType::TEXT, "\n    "],
                 [TokenType::HTML, '<a href="/login">' ],
                 [TokenType::TEXT, 'Login'],
                 [TokenType::HTML, '</a>'],
@@ -114,7 +114,7 @@ final class LexerIntegrationTest extends TestCase
                 <a href="/login">Login</a>
             <?php endif; ?>
 
-            <Greeting name="Hello <?= $name ?>!" />            
+            <Greeting name="Hello <?= $name ?>!" />
             PHP;
 
         $tokens = $this->lexer->tokenize($source);
@@ -122,20 +122,21 @@ final class LexerIntegrationTest extends TestCase
         self::assertSame(
             [
                 [TokenType::PHP, ' if ($isAdmin): '],
-                [TokenType::TEXT, "\n  "],
+                [TokenType::TEXT, "\n    "],
                 [TokenType::HTML, '<a href="/login">' ],
                 [TokenType::TEXT, 'Login'],
                 [TokenType::HTML, '</a>'],
                 [TokenType::TEXT, "\n"],
                 [TokenType::PHP, ' endif; '],
+                [TokenType::TEXT, "\n\n"],
                 [TokenType::COMPONENT_OPEN, '<'],
                 [TokenType::IDENTIFIER, 'Greeting'],
                 [TokenType::IDENTIFIER, 'name'],
                 [TokenType::EQUALS, '='],
-                [TokenType::TEXT, "Hello"],
+                [TokenType::TEXT, "Hello "],
                 [TokenType::PHP_EXPRESSION, ' $name '],
+                [TokenType::TEXT, "!"],
                 [TokenType::COMPONENT_SELF_CLOSE, '/>'],
-                [TokenType::TEXT, "\n"],
             ],
             array_map(
                 static fn ($token): array => [

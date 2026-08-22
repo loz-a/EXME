@@ -47,8 +47,7 @@ final class Lexer
             $result[$i] = new Token(
                 type: $tokens[$i]->type,
                 text: $tokens[$i]->text,
-                position: $i === 0 ? $startPos : $tokens[$i]->position + $startPos,
-                canTokenize: $tokens[$i]->canTokenize,
+                position: $tokens[$i]->position + $startPos,
             ); 
         }
 
