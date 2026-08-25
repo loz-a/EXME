@@ -357,22 +357,5 @@ final class LexerIntegrationTest extends TestCase
         ));
     }
 
-    public function testTokenizesMultilineComponentAttributes(): void
-    {
-        $source = "<Greeting\n    name=\"John\"\n    age=\"15\"\n    role=\"admin\"\n/>";
-        $tokens = $this->lexer->tokenize($source);
-        self::assertSame([
-            [TokenType::COMPONENT_OPEN, '<'],
-            [TokenType::IDENTIFIER, 'Greeting'],
-            [TokenType::IDENTIFIER, 'name'], [TokenType::EQUALS, '='], [TokenType::TEXT, 'John'],
-            [TokenType::IDENTIFIER, 'age'], [TokenType::EQUALS, '='], [TokenType::TEXT, '15'],
-            [TokenType::IDENTIFIER, 'role'], [TokenType::EQUALS, '='], [TokenType::TEXT, 'admin'],
-            [TokenType::COMPONENT_SELF_CLOSE, '/>'],
-        ], array_map(
-            static fn ($token): array => [$token->type, $token->text],
-            $tokens,
-        ));
-    }
-
 
 }

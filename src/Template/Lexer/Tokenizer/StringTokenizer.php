@@ -48,7 +48,8 @@ final class StringTokenizer implements TokenizerInterface
         return new Token(
             type: TokenType::TEXT,
             text: $text,
-            position: $position,
+            // The quoted value is recursively tokenized from after this quote.
+            position: $position + 1,
             canTokenize: true,
         );
     }

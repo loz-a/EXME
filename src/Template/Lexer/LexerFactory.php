@@ -8,6 +8,7 @@ use EXME\Template\Lexer\Lexer;
 use EXME\Template\Lexer\Tokenizer\ComponentCloseTokenizer;
 use EXME\Template\Lexer\Tokenizer\ComponentSelfCloseTokenizer;
 use EXME\Template\Lexer\Tokenizer\ComponentTokenizer;
+use EXME\Template\Lexer\Tokenizer\ComponentClosingTagTokenizer;
 use EXME\Template\Lexer\Tokenizer\EqualsTokenizer;
 use EXME\Template\Lexer\Tokenizer\HtmlTokenizer;
 use EXME\Template\Lexer\Tokenizer\IdentifierTokenizer;
@@ -28,6 +29,7 @@ final class LexerFactory
             new ComponentTokenizer(),
             new ComponentSelfCloseTokenizer(),
             new ComponentCloseTokenizer(),
+            new ComponentClosingTagTokenizer(),
 
             new HtmlTokenizer(),
             
