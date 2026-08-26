@@ -317,26 +317,41 @@ final class LexerIntegrationTest extends TestCase
         $tokens = $this->lexer->tokenize('<Greeting message="Hello <?= $user->name ?>!" />');
 
         self::assertSame([
-            [TokenType::COMPONENT_OPEN, "<"], [TokenType::IDENTIFIER, "Greeting"],
-            [TokenType::IDENTIFIER, "message"], [TokenType::EQUALS, "="], [TokenType::TEXT, "Hello "],
-            [TokenType::PHP_EXPRESSION, ' $user->name '], [TokenType::TEXT, "!"],
+            [TokenType::COMPONENT_OPEN, "<"], 
+            [TokenType::IDENTIFIER, "Greeting"],
+            [TokenType::IDENTIFIER, "message"], 
+            [TokenType::EQUALS, "="], 
+            [TokenType::TEXT, "Hello "],
+            [TokenType::PHP_EXPRESSION, ' $user->name '], 
+            [TokenType::TEXT, "!"],
             [TokenType::COMPONENT_SELF_CLOSE, "/>"],
         ], array_map(static fn ($token): array => [$token->type, $token->text], $tokens));
 
         $tokens = $this->lexer->tokenize("<Header>Firstname:</Header>");
         self::assertSame([
-            [TokenType::COMPONENT_OPEN, "<"], [TokenType::IDENTIFIER, "Header"], [TokenType::COMPONENT_CLOSE, ">"],
-            [TokenType::TEXT, "Firstname:"], [TokenType::COMPONENT_CLOSE, "</Header>"],
+            [TokenType::COMPONENT_OPEN, "<"], 
+            [TokenType::IDENTIFIER, "Header"], 
+            [TokenType::COMPONENT_CLOSE, ">"],
+            [TokenType::TEXT, "Firstname:"], 
+            [TokenType::COMPONENT_CLOSE, "</Header>"],
         ], array_map(static fn ($token): array => [$token->type, $token->text], $tokens));
     }
 
     public function testTokenizesHtmlAndPhpInsideComponents(): void
     {
-        $tokens = $this->lexer->tokenize('<Card><div class="card">Hello</div><?php if ($isAdmin): ?>Admin<?php endif; ?></Card>');
+        $templateText = '<Card><div class="card">Hello</div><?php if ($isAdmin): ?>Admin<?php endif; ?></Card>';
+        $tokens = $this->lexer->tokenize($templateText);
+        
         self::assertSame([
-            [TokenType::COMPONENT_OPEN, "<"], [TokenType::IDENTIFIER, "Card"], [TokenType::COMPONENT_CLOSE, ">"],
-            [TokenType::HTML, '<div class="card">'], [TokenType::TEXT, "Hello"], [TokenType::HTML, "</div>"],
-            [TokenType::PHP, ' if ($isAdmin): '], [TokenType::TEXT, "Admin"], [TokenType::PHP, ' endif; '],
+            [TokenType::COMPONENT_OPEN, "<"], 
+            [TokenType::IDENTIFIER, "Card"], 
+            [TokenType::COMPONENT_CLOSE, ">"],
+            [TokenType::HTML, '<div class="card">'], 
+            [TokenType::TEXT, "Hello"], 
+            [TokenType::HTML, "</div>"],
+            [TokenType::PHP, ' if ($isAdmin): '], 
+            [TokenType::TEXT, "Admin"], 
+            [TokenType::PHP, ' endif; '],
             [TokenType::COMPONENT_CLOSE, "</Card>"],
         ], array_map(static fn ($token): array => [$token->type, $token->text], $tokens));
     }
@@ -364,15 +379,19 @@ final class LexerIntegrationTest extends TestCase
         self::assertSame([
             [TokenType::COMPONENT_OPEN, '<'],
             [TokenType::IDENTIFIER, 'Greeting'],
-            [TokenType::IDENTIFIER, 'name'], [TokenType::EQUALS, '='], [TokenType::TEXT, 'John'],
-            [TokenType::IDENTIFIER, 'age'], [TokenType::EQUALS, '='], [TokenType::TEXT, '15'],
-            [TokenType::IDENTIFIER, 'role'], [TokenType::EQUALS, '='], [TokenType::TEXT, 'admin'],
+            [TokenType::IDENTIFIER, 'name'], 
+            [TokenType::EQUALS, '='], 
+            [TokenType::TEXT, 'John'],
+            [TokenType::IDENTIFIER, 'age'], 
+            [TokenType::EQUALS, '='], 
+            [TokenType::TEXT, '15'],
+            [TokenType::IDENTIFIER, 'role'], 
+            [TokenType::EQUALS, '='], 
+            [TokenType::TEXT, 'admin'],
             [TokenType::COMPONENT_SELF_CLOSE, '/>'],
         ], array_map(
             static fn ($token): array => [$token->type, $token->text],
             $tokens,
         ));
     }
-
-
 }

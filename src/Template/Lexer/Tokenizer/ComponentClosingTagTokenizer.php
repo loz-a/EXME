@@ -15,10 +15,12 @@ final class ComponentClosingTagTokenizer implements TokenizerInterface
 {
     public function supports(LexerContext $context): bool
     {
+        $componentNameFirstLetter = $context->peek(2);
+
         return $context->mode === LexerMode::TEMPLATE
             && $context->startsWith('</')
-            && ($nameStart = $context->peek(2)) !== null
-            && ctype_upper($nameStart);
+            && $componentNameFirstLetter !== null
+            && ctype_upper($componentNameFirstLetter);
     }
 
     public function tokenize(LexerContext $context): Token
