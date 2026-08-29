@@ -35,6 +35,10 @@ final class Lexer
             }
         }
 
+        if ($context->mode === LexerMode::COMPONENT) {
+            throw new \RuntimeException(sprintf('Unterminated component declaration at position %d', $context->position));
+        }
+
         return $tokens;
     }
 

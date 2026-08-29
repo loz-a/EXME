@@ -14,7 +14,7 @@ final class PhpTokenizer implements TokenizerInterface
 {
     public function supports(LexerContext $context): bool
     {
-        return $context->mode === LexerMode::TEMPLATE 
+        return ($context->mode === LexerMode::TEMPLATE || $context->mode === LexerMode::COMPONENT)
             && $context->current() === '{';
     }
 
@@ -26,7 +26,7 @@ final class PhpTokenizer implements TokenizerInterface
 
         $start = $context->position;
 
-        $this->consumeUntilPhpClose($context);
+        $this->consumeUntilPhpClose($context, $position);
 
         $text = substr(
             $context->source,
@@ -45,14 +45,22 @@ final class PhpTokenizer implements TokenizerInterface
         );
     }
 
-    private function consumeUntilPhpClose(LexerContext $context): void
+    private function consumeUntilPhpClose(LexerContext $context, int $openingPosition): void
     {
+        $depth = 1;
+        $quote = null;
         while (!$context->isAtEnd()) {
-            if ($context->current() == '}') {
-                return;
+            $current = $context->current();
+            if ($quote !== null) {
+                if ($current === "\\") { $context->moveNext(2); continue; }
+                if ($current === $quote) { $quote = null; }
+                $context->moveNext(); continue;
             }
-
+            if ($current === "\"" || $current === chr(39)) { $quote = $current; $context->moveNext(); continue; }
+            if ($current === "{") { ++$depth; }
+            if ($current === "}" && --$depth === 0) { return; }
             $context->moveNext();
         }
+        throw new \RuntimeException(sprintf('Unterminated PHP block at position %d', $openingPosition));
     }
 }
