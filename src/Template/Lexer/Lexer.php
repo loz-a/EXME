@@ -48,6 +48,7 @@ final class Lexer
                 type: $tokens[$i]->type,
                 text: $tokens[$i]->text,
                 position: $tokens[$i]->position + $startPos,
+                canTokenize: $tokens[$i]->canTokenize,
             ); 
         }
 

@@ -24,8 +24,7 @@ final class LexerIntegrationTest extends TestCase
 
     public function setUp(): void
     {
-        $lexerFactory = new LexerFactory();
-        $this->lexer = $lexerFactory->create();
+        $this->lexer = new LexerFactory()->create();
     }
 
     public function testTokenizesCompleteTemplate(): void
