@@ -15,14 +15,14 @@ final class PhpTokenizer implements TokenizerInterface
     public function supports(LexerContext $context): bool
     {
         return $context->mode === LexerMode::TEMPLATE 
-            && $context->startsWith('<?php');
+            && $context->current() === '{';
     }
 
     public function tokenize(LexerContext $context): Token
     {
         $position = $context->position;
 
-        $context->moveNext(5);
+        $context->moveNext();
 
         $start = $context->position;
 
@@ -34,8 +34,8 @@ final class PhpTokenizer implements TokenizerInterface
             $context->position - $start,
         );
 
-        if ($context->startsWith('?>')) {
-            $context->moveNext(2);
+        if ($context->current() === '}' ) {
+            $context->moveNext();
         }
 
         return new Token(
@@ -48,7 +48,7 @@ final class PhpTokenizer implements TokenizerInterface
     private function consumeUntilPhpClose(LexerContext $context): void
     {
         while (!$context->isAtEnd()) {
-            if ($context->startsWith('?>')) {
+            if ($context->current() == '}') {
                 return;
             }
 

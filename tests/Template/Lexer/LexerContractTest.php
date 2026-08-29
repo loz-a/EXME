@@ -129,9 +129,9 @@ final class LexerContractTest extends TestCase
     public function testLexerSupportsAllPublicTokenTypes(): void
     {
         $source = <<<'PHP'
-            <?php $name = 'John'; ?>
+            {$name = 'John'}
 
-            <Greeting message="Hello <?= $name ?>!">
+            <Greeting message="Hello {$name}!">
                 Hello
             </Greeting>
 
@@ -149,7 +149,7 @@ final class LexerContractTest extends TestCase
         );
 
         self::assertContains(TokenType::PHP, $types);
-        self::assertContains(TokenType::PHP_EXPRESSION, $types);
+        self::assertContains(TokenType::PHP, $types);
 
         self::assertContains(TokenType::COMPONENT_OPEN, $types);
         self::assertContains(TokenType::COMPONENT_CLOSE, $types);
@@ -168,7 +168,7 @@ final class LexerContractTest extends TestCase
      */
     public function testNestedTokensKeepAbsolutePositions(): void
     {
-        $source = 'before <Greeting name="<?= $name ?>">Hello</Greeting> after';
+        $source = 'before <Greeting name="{$name}">Hello</Greeting> after';
 
         $tokens = $this->lexer->tokenize($source);
 
@@ -221,11 +221,11 @@ final class LexerContractTest extends TestCase
         ];
 
         yield 'component with PHP expression' => [
-            '<Greeting name="<?= $user->name ?>" />',
+            '<Greeting name="{$user->name}" />',
         ];
 
         yield 'PHP block' => [
-            '<?php if ($isAdmin): ?>Admin<?php endif; ?>',
+            '{ if ($isAdmin): }Admin{ endif }',
         ];
 
         yield 'HTML mixed with components' => [
@@ -234,11 +234,11 @@ final class LexerContractTest extends TestCase
 
         yield 'complete template' => [
             <<<'PHP'
-                <?php
+                {
                     $name = 'John';
-                ?>
+                }
 
-                <Greeting name="<?= $name ?>">
+                <Greeting name="{$name}">
                     <strong>Hello</strong>
                 </Greeting>
                 PHP,

@@ -25,7 +25,6 @@ namespace EXME\Template\Lexer;
  *
  * PHP tokens:
  * - PHP
- * - PHP_EXPRESSION
  */
 
 enum TokenType: string
@@ -40,5 +39,4 @@ enum TokenType: string
     
     case HTML = 'html';
     case PHP = 'php';
-    case PHP_EXPRESSION = 'php_expression';
 }

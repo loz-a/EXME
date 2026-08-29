@@ -30,18 +30,18 @@ final class LexerIntegrationTest extends TestCase
     public function testTokenizesCompleteTemplate(): void
     {
         $source = <<<'PHP'
-            <?php
+            {
             use EXME\Component\Greeting;
 
             $name = 'Rasmus';
             $isAdmin = false;
-            ?>
+            }
 
-            <Greeting name="<?= $name ?>" />
+            <Greeting name="{$name}" />
 
-            <?php if ($isAdmin): ?>
+            { if ($isAdmin): }
                 <a href="/login">Login</a>
-            <?php endif; ?>
+            { endif }
             PHP;
 
         $tokens = $this->lexer->tokenize($source);
@@ -54,7 +54,7 @@ final class LexerIntegrationTest extends TestCase
                 [TokenType::IDENTIFIER, 'Greeting'],
                 [TokenType::IDENTIFIER, 'name'],
                 [TokenType::EQUALS, '='],
-                [TokenType::PHP_EXPRESSION, ' $name '],
+                [TokenType::PHP, '$name'],
                 [TokenType::COMPONENT_SELF_CLOSE, '/>'],
                 [TokenType::TEXT, "\n\n"],
                 [TokenType::PHP, ' if ($isAdmin): '],
@@ -63,7 +63,7 @@ final class LexerIntegrationTest extends TestCase
                 [TokenType::TEXT, 'Login'],
                 [TokenType::HTML, '</a>'],
                 [TokenType::TEXT, "\n"],
-                [TokenType::PHP, ' endif; '],
+                [TokenType::PHP, ' endif '],
             ],
             array_map(
                 static fn ($token): array => [
@@ -109,11 +109,11 @@ final class LexerIntegrationTest extends TestCase
     public function testTokenizesCompleteTemplateWithPhpExpression(): void
     {
         $source = <<<'PHP'
-            <?php if ($isAdmin): ?>
+            { if ($isAdmin): }
                 <a href="/login">Login</a>
-            <?php endif; ?>
+            { endif }
 
-            <Greeting name="Hello <?= $name ?>!" />
+            <Greeting name="Hello {$name}!" />
             PHP;
 
         $tokens = $this->lexer->tokenize($source);
@@ -133,7 +133,7 @@ final class LexerIntegrationTest extends TestCase
                 [TokenType::IDENTIFIER, 'name'],
                 [TokenType::EQUALS, '='],
                 [TokenType::TEXT, "Hello "],
-                [TokenType::PHP_EXPRESSION, ' $name '],
+                [TokenType::PHP, '$name'],
                 [TokenType::TEXT, "!"],
                 [TokenType::COMPONENT_SELF_CLOSE, '/>'],
             ],
@@ -313,7 +313,7 @@ final class LexerIntegrationTest extends TestCase
 
     public function testTokenizesAttributesPhpAndComponentClosingTags(): void
     {
-        $tokens = $this->lexer->tokenize('<Greeting message="Hello <?= $user->name ?>!" />');
+        $tokens = $this->lexer->tokenize('<Greeting message="Hello {$user->name}!" />');
 
         self::assertSame([
             [TokenType::COMPONENT_OPEN, "<"], 
@@ -321,7 +321,7 @@ final class LexerIntegrationTest extends TestCase
             [TokenType::IDENTIFIER, "message"], 
             [TokenType::EQUALS, "="], 
             [TokenType::TEXT, "Hello "],
-            [TokenType::PHP_EXPRESSION, ' $user->name '], 
+            [TokenType::PHP, ' $user->name '], 
             [TokenType::TEXT, "!"],
             [TokenType::COMPONENT_SELF_CLOSE, "/>"],
         ], array_map(static fn ($token): array => [$token->type, $token->text], $tokens));
@@ -338,7 +338,7 @@ final class LexerIntegrationTest extends TestCase
 
     public function testTokenizesHtmlAndPhpInsideComponents(): void
     {
-        $templateText = '<Card><div class="card">Hello</div><?php if ($isAdmin): ?>Admin<?php endif; ?></Card>';
+        $templateText = '<Card><div class="card">Hello</div>{ if ($isAdmin): }Admin{ endif }</Card>';
         $tokens = $this->lexer->tokenize($templateText);
         
         self::assertSame([
@@ -350,7 +350,7 @@ final class LexerIntegrationTest extends TestCase
             [TokenType::HTML, "</div>"],
             [TokenType::PHP, ' if ($isAdmin): '], 
             [TokenType::TEXT, "Admin"], 
-            [TokenType::PHP, ' endif; '],
+            [TokenType::PHP, ' endif '],
             [TokenType::COMPONENT_CLOSE, "</Card>"],
         ], array_map(static fn ($token): array => [$token->type, $token->text], $tokens));
     }

@@ -12,7 +12,6 @@ use EXME\Template\Lexer\Tokenizer\ComponentClosingTagTokenizer;
 use EXME\Template\Lexer\Tokenizer\EqualsTokenizer;
 use EXME\Template\Lexer\Tokenizer\HtmlTokenizer;
 use EXME\Template\Lexer\Tokenizer\IdentifierTokenizer;
-use EXME\Template\Lexer\Tokenizer\PhpExpressionTokenizer;
 use EXME\Template\Lexer\Tokenizer\PhpTokenizer;
 use EXME\Template\Lexer\Tokenizer\StringTokenizer;
 use EXME\Template\Lexer\Tokenizer\TextTokenizer;
@@ -23,7 +22,6 @@ final class LexerFactory
     public function create(): Lexer
     {
         $chain = new TokenizerChain([
-            new PhpExpressionTokenizer(),
             new PhpTokenizer(),
 
             new ComponentTokenizer(),

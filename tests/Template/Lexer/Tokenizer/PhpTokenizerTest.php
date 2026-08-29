@@ -35,19 +35,19 @@ final class PhpTokenizerTest extends TestCase
     public static function supportedPhpProvider(): iterable
     {
         yield 'php block' => [
-            '<?php $name = "Rasmus"; ?>',
+            '{$name = "Rasmus"}',
         ];
 
         yield 'php block with whitespace' => [
-            '<?php
+            '{
                 $name = "Rasmus";
-            ?>',
+            }',
         ];
     }
 
     public function testDoesNotSupportPhpExpression(): void
     {
-        $context = new LexerContext('<?= $name ?>');
+        $context = new LexerContext('{$name}');
 
         self::assertFalse(
             $this->tokenizer->supports($context),
@@ -56,7 +56,7 @@ final class PhpTokenizerTest extends TestCase
 
     public function testTokenizesPhpBlock(): void
     {
-        $source = '<?php $name = "Rasmus"; ?>';
+        $source = '{$name = "Rasmus"}';
 
         $context = new LexerContext($source);
 
@@ -68,7 +68,7 @@ final class PhpTokenizerTest extends TestCase
         );
 
         self::assertSame(
-            ' $name = "Rasmus"; ',
+            '$name = "Rasmus"',
             $token->text,
         );
 
@@ -77,17 +77,21 @@ final class PhpTokenizerTest extends TestCase
         self::assertTrue($context->isAtEnd());
     }
 
-    public function testTokenizesPhpBlockWithoutClosingTag(): void
-    {
-        $source = '<?php $name = "Rasmus";';
 
-        $context = new LexerContext($source);
+    public function testTokenizesExpressionAtNonZeroPosition(): void
+    {
+        $source = 'prefix {$name}';
+
+        $context = new LexerContext(
+            $source,
+            position: 7,
+        );
 
         $token = $this->tokenizer->tokenize($context);
 
         self::assertSame(TokenType::PHP, $token->type);
-        self::assertSame(' $name = "Rasmus";', $token->text);
-        self::assertSame(0, $token->position);
+        self::assertSame(' $name ', $token->text);
+        self::assertSame(7, $token->position);
         self::assertTrue($context->isAtEnd());
     }
 }
