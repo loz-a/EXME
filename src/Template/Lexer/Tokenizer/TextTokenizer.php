@@ -15,9 +15,7 @@ final class TextTokenizer implements TokenizerInterface
     public function supports(LexerContext $context): bool
     {
         return $context->mode === LexerMode::TEMPLATE
-            && !$context->isAtEnd()
-            && $context->current() !== '<'
-            && $context->current() !== '{';
+            && $this->isText($context);
     }
 
     public function tokenize(LexerContext $context): Token
@@ -25,7 +23,7 @@ final class TextTokenizer implements TokenizerInterface
         $position = $context->position;
         $start = $position;
 
-        while (!$context->isAtEnd() && $context->current() !== '<' && $context->current() !== '{') {
+        while ($this->isText($context)) {
             $context->moveNext();
         }
 
@@ -38,5 +36,10 @@ final class TextTokenizer implements TokenizerInterface
             ),
             position: $position,
         );
+    }
+
+    private function isText(LexerContext $context): bool
+    {
+        return !$context->isAtEnd() && $context->current() !== '<' && $context->current() !== '{';
     }
 }

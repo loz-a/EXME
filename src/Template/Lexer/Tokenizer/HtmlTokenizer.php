@@ -14,9 +14,8 @@ final class HtmlTokenizer implements TokenizerInterface
 {
     public function supports(LexerContext $context): bool
     {
-        if ($context->mode !== LexerMode::TEMPLATE 
-            || $context->current() !== '<') 
-        {
+        $isUnsupported = $context->mode !== LexerMode::TEMPLATE || $context->current() !== '<';
+        if ($isUnsupported) {
             return false;
         }
 
@@ -44,27 +43,8 @@ final class HtmlTokenizer implements TokenizerInterface
 
     private function consumeUntilTagEnd(LexerContext $context): void
     {
-        $quote = null;
-
         while (!$context->isAtEnd()) {
             $char = $context->current();
-
-            if ($quote !== null) {
-                if ($char === $quote) {
-                    $quote = null;
-                }
-
-                $context->moveNext();
-
-                continue;
-            }
-
-            if ($char === '"' || $char === "'") {
-                $quote = $char;
-                $context->moveNext();
-
-                continue;
-            }
 
             if ($char === '>') {
                 $context->moveNext();

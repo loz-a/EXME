@@ -14,8 +14,8 @@ final class PhpTokenizer implements TokenizerInterface
 {
     public function supports(LexerContext $context): bool
     {
-        return ($context->mode === LexerMode::TEMPLATE || $context->mode === LexerMode::COMPONENT)
-            && $context->current() === '{';
+        $canBeTokenized = $context->mode === LexerMode::TEMPLATE || $context->mode === LexerMode::COMPONENT;
+        return $canBeTokenized && $context->current() === '{';
     }
 
     public function tokenize(LexerContext $context): Token
@@ -45,22 +45,25 @@ final class PhpTokenizer implements TokenizerInterface
         );
     }
 
-    private function consumeUntilPhpClose(LexerContext $context, int $openingPosition): void
+    private function consumeUntilPhpClose(LexerContext $context, int $startPosition): void
     {
         $depth = 1;
-        $quote = null;
+
         while (!$context->isAtEnd()) {
             $current = $context->current();
-            if ($quote !== null) {
-                if ($current === "\\") { $context->moveNext(2); continue; }
-                if ($current === $quote) { $quote = null; }
-                $context->moveNext(); continue;
+            
+            if ($current === "{") { 
+                ++$depth; 
             }
-            if ($current === "\"" || $current === chr(39)) { $quote = $current; $context->moveNext(); continue; }
-            if ($current === "{") { ++$depth; }
-            if ($current === "}" && --$depth === 0) { return; }
+
+            $isEndPosition = $current === "}" && --$depth === 0;
+            if ($isEndPosition) { 
+                return; 
+            }
+
             $context->moveNext();
         }
-        throw new \RuntimeException(sprintf('Unterminated PHP block at position %d', $openingPosition));
+
+        throw new \RuntimeException(sprintf('Unterminated PHP block at position %d', $startPosition));
     }
 }

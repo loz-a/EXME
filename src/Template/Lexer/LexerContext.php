@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace EXME\Template\Lexer;
 
+use function substr;
+use function strlen;
+use function ctype_space;
+
 final class LexerContext
 {
     public function __construct(
