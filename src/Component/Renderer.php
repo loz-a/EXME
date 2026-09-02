@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace EXME\Component;
 
-use EXME\Component\Contract\ComponentRendererInterface;
-use EXME\Template\Parser\ComponentNode;
-
-final class Renderer implements ComponentRendererInterface
+final class Renderer
 {
-    public function render(ComponentNode $node): string
+    public function render($node): string
     {
         $class = $node->name;
 
