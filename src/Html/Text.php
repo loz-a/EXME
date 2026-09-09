@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace EXME\Html;
 
-final readonly class Text implements Html
+use EXME\Html\Contract\HtmlInterface;
+
+final readonly class Text implements HtmlInterface
 {
     public function __construct(
         public string $text,
     ){
     }
 
-    public function toHtml(): Html
+    public function toHtml(): HtmlInterface
     {
         return $this;
     }

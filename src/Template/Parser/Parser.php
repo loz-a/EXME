@@ -4,28 +4,25 @@ declare(strict_types=1);
 
 namespace EXME\Template\Parser;
 
-use EXME\Template\Lexer\Token;
-use EXME\Template\Lexer\TokenType;
+use EXME\Html\Contract\HtmlInterface;
+use EXME\Template\Parser\Contract\TokenValidatorInterface;
+use EXME\Template\Parser\Contract\ParserContextInterface;
+use EXME\Template\Parser\Contract\ParserInterface;
 
-final class Parser
+final class Parser implements ParserInterface
 {
-    /**
-     * @var list<Token>
-     */
-    private readonly array $tokens;
-
-    private int $position = 0;
-
-    /**
-     * @param list<Token> $tokens
-     */
-    public function __construct(array $tokens)
-    {
-        $this->tokens = $tokens;
+    public function __construct(
+        private TokenValidatorInterface $tokenValidator,
+        private HtmlResultBuilder $resultBuilder,
+    ){      
     }
 
-    public function parse(): ComponentNode
+    public function parse(ParserContextInterface $ctx): HtmlInterface
     {
+        $this->validateTokens($ctx);
+        return $this->resultBuilder->build($ctx);
+
+
         // $this->position = 0;
 
         // $this->expect(TokenType::TAG_OPEN);
@@ -73,42 +70,17 @@ final class Parser
         // );
     }
 
-    private function expect(TokenType $type): Token
+    private function validateTokens(ParserContextInterface $ctx): void
     {
-        if ($this->isAtEnd()) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Expected token "%s", but reached end of input',
-                    $type->value,
-                ),
-            );
+        $tokenValidator = $this->tokenValidator->setContext($ctx);
+
+        $tokenValidator->validate();
+        
+        while ($ctx->hasNext()) {
+            $ctx->moveNext();
+            $tokenValidator->validate();
         }
 
-        $token = $this->current();
-
-        if ($token->type !== $type) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Expected token "%s", got "%s" at position %d',
-                    $type->value,
-                    $token->type->value,
-                    $token->position,
-                ),
-            );
-        }
-
-        $this->position++;
-
-        return $token;
-    }
-
-    private function current(): Token
-    {
-        return $this->tokens[$this->position];
-    }
-
-    private function isAtEnd(): bool
-    {
-        return $this->position >= count($this->tokens);
+        $ctx->reset();
     }
 }

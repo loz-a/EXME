@@ -7,6 +7,7 @@ namespace EXME\Html;
 use Stringable;
 use TypeError;
 use ValueError;
+use EXME\Html\Contract\HtmlInterface;
 
 use function sprintf;
 use function implode;
@@ -15,7 +16,7 @@ use function get_debug_type;
 use function htmlspecialchars;
 use function strtolower;
 
-final readonly class Element implements Html
+final readonly class Element implements HtmlInterface
 {
     public array $children;
 
@@ -37,7 +38,7 @@ final readonly class Element implements Html
         $this->setChildren(...$children);
     }
 
-    public function toHtml(): Html
+    public function toHtml(): HtmlInterface
     {
         return $this;
     }
@@ -47,7 +48,7 @@ final readonly class Element implements Html
         return $this->render();
     }
         
-    private function setChildren(Html|string ...$rawChildren): void
+    private function setChildren(HtmlInterface|string ...$rawChildren): void
     {
         $children = [];
         foreach ($rawChildren as $child) {            

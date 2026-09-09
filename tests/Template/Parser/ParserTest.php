@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace EXMETests\Template\Parser;
 
 use EXME\Template\Lexer\Lexer;
-use EXME\Template\Parser\ComponentNode;
 use EXME\Template\Parser\Parser;
 use PHPUnit\Framework\TestCase;
 

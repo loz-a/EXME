@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace EXME\Html;
 
-final readonly class Fragment implements Html
+use EXME\Html\Contract\HtmlInterface;
+
+final readonly class Fragment implements HtmlInterface
 {
     public readonly array $children;
     /**
-     * @param array<int, Html> $children
+     * @param array<int, HtmlInterface> $children
      */
-    public function __construct(Html ...$children)
+    public function __construct(HtmlInterface ...$children)
     {
         $this->children = $children;
     }
 
-    public function toHtml(): Html
+    public function toHtml(): HtmlInterface
     {
         return $this;
     }
