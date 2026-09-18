@@ -10,7 +10,7 @@ use EXME\Template\Lexer\Token;
 use EXME\Template\Lexer\TokenType;
 use EXME\Template\Lexer\Tokenizer\Contract\TokenizerInterface;
 
-final class ComponentTokenizer implements TokenizerInterface
+final class ComponentStartTokenizer implements TokenizerInterface
 {
     public function supports(LexerContext $context): bool
     {

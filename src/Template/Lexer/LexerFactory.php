@@ -7,7 +7,7 @@ namespace EXME\Template\Lexer;
 use EXME\Template\Lexer\Lexer;
 use EXME\Template\Lexer\Tokenizer\ComponentCloseTokenizer;
 use EXME\Template\Lexer\Tokenizer\ComponentSelfCloseTokenizer;
-use EXME\Template\Lexer\Tokenizer\ComponentTokenizer;
+use EXME\Template\Lexer\Tokenizer\ComponentStartTokenizer;
 use EXME\Template\Lexer\Tokenizer\ComponentClosingTagTokenizer;
 use EXME\Template\Lexer\Tokenizer\ComponentNameTokenizer;
 use EXME\Template\Lexer\Tokenizer\EqualsTokenizer;
@@ -30,7 +30,7 @@ final class LexerFactory
         $tokenizer = new TokenizerChain([
             new PhpTokenizer(),
 
-            new ComponentTokenizer(),
+            new ComponentStartTokenizer(),
             new ComponentNameTokenizer(),
             new ComponentSelfCloseTokenizer(),
             new ComponentCloseTokenizer(),

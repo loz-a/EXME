@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace EXME\Template\Parser\Node\Factory;
 
-use EXME\Template\Lexer\Contract\TokenCollectionInterface;
+use EXME\Template\Lexer\Contract\TokenStreamInterface;
 use EXME\Template\Lexer\TokenType as Type;
 use EXME\Template\Parser\Node\Component;
 use EXME\Template\Parser\Node\Contract\NodeFactoryInterface;
 use EXME\Template\Parser\Node\Contract\NodeInterface;
 use EXME\Template\Parser\Node\Fragment;
-use EXME\Template\Parser\Node\Raw;
+use EXME\Template\Parser\Node\Html;
+use EXME\Template\Parser\Node\Php;
 use EXME\Template\Parser\Node\Text;
 use RuntimeException;
 
@@ -18,7 +19,7 @@ use function sprintf;
 
 final class NodeFactory implements NodeFactoryInterface
 {
-    public function create(TokenCollectionInterface $tokens): NodeInterface
+    public function create(TokenStreamInterface $tokens): NodeInterface
     {        
         $result = [];
 
@@ -45,8 +46,13 @@ final class NodeFactory implements NodeFactoryInterface
                 continue;
             }
 
-            if ($token->type === Type::HTML || $token->type === Type::PHP) {
-                $result[] = new Raw($token->text);
+            if ($token->type === Type::HTML) {
+                $result[] = new Html($token->text);
+                continue;
+            }
+
+            if ($token->type === Type::PHP) {
+                $result[] = new Php($token->text);
                 continue;
             }
         }
@@ -55,7 +61,7 @@ final class NodeFactory implements NodeFactoryInterface
 
     }
 
-    private function processComponent(TokenCollectionInterface $tokens): NodeInterface
+    private function processComponent(TokenStreamInterface $tokens): NodeInterface
     {
         $cParams = [];
         $tokenName = $tokens->dequeue();
@@ -68,8 +74,8 @@ final class NodeFactory implements NodeFactoryInterface
 
         $token = $tokens->dequeue();
 
-        while ($token !== Type::COMPONENT_SELF_CLOSE
-            || $token !== Type::COMPONENT_CLOSE
+        while ($token->type !== Type::COMPONENT_SELF_CLOSE
+            || $token->type !== Type::COMPONENT_CLOSE
         ){
 
             if ($token->type === Type::IDENTIFIER) {
@@ -108,7 +114,7 @@ final class NodeFactory implements NodeFactoryInterface
         return new Component($cName, $cParams, $slot);
     }
 
-    private function checkTokenExhaustion(TokenCollectionInterface $tokens, ?string $customMessage = null): void
+    private function checkTokenExhaustion(TokenStreamInterface $tokens, ?string $customMessage = null): void
     {
         if ($tokens->isEmpty()) {
             $message = 'Unexpected token exhaustion.';

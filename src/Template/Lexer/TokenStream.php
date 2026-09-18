@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace EXME\Template\Lexer;
 
-use EXME\Template\Lexer\Contract\TokenCollectionInterface;
+use EXME\Template\Lexer\Contract\TokenStreamInterface;
 use EXME\Template\Lexer\Token;
 use Override;
 use SplQueue;
 
 use function iterator_to_array;
 
-final class TokenCollection implements TokenCollectionInterface
+final class TokenStream implements TokenStreamInterface
 {
     private SplQueue $queue;
 

@@ -6,17 +6,17 @@ namespace EXME\Template\Parser\Node;
 
 use EXME\Template\Parser\Node\Contract\NodeInterface;
 
-final readonly class Raw implements NodeInterface
+final readonly class Php implements NodeInterface
 {
     use NodeTrait;
 
     public function __construct(
-        public string $html,
+        public string $phpCode,
     ){
     }
 
     public function render(): string
     {
-        return $this->html;
+        return $this->phpCode;
     }
 }

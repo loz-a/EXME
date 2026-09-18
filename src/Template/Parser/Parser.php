@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EXME\Template\Parser;
 
-use EXME\Template\Lexer\Contract\TokenCollectionInterface;
+use EXME\Template\Lexer\Contract\TokenStreamInterface;
 use EXME\Template\Parser\Contract\ParserInterface;
 use EXME\Template\Parser\Node\Contract\NodeFactoryInterface;
 use EXME\Template\Parser\Node\Contract\NodeInterface;
@@ -17,7 +17,7 @@ final class Parser implements ParserInterface
     ){      
     }
 
-    public function parse(TokenCollectionInterface $tokens): NodeInterface
+    public function parse(TokenStreamInterface $tokens): NodeInterface
     {
         $node = $this->nodeFactory->create($tokens);       
         // return $this->resultBuilder->build($ast);

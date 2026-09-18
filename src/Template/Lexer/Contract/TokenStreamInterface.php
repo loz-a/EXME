@@ -7,7 +7,7 @@ namespace EXME\Template\Lexer\Contract;
 use Countable;
 use EXME\Template\Lexer\Token;
 
-interface TokenCollectionInterface extends Countable
+interface TokenStreamInterface extends Countable
 {
     public function dequeue(): Token;
 

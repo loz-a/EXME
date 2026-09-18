@@ -26,7 +26,11 @@ final class ComponentClosingTagTokenizer implements TokenizerInterface
     public function tokenize(LexerContext $context): Token
     {
         $position = $context->position;
-        $context->moveNext(2);
+
+        $context->moveNext(2);        
+        $context->skipWhitespace();
+        
+        $start = $context->position;
 
         while (($current = $context->current()) !== null && $this->isIdentifierPart($current)) {
             $context->moveNext();
@@ -42,9 +46,11 @@ final class ComponentClosingTagTokenizer implements TokenizerInterface
 
         $context->moveNext();
 
+        $end = ($context->position - 1) - $start;
+
         return new Token(
             type: TokenType::COMPONENT_CLOSING_TAG,
-            text: substr($context->source, $position, $context->position - $position),
+            text: substr($context->source, $start, $end),
             position: $position,
         );
     }
