@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace EXME\Template\Parser;
 
-use EXME\Html\Contract\HtmlInterface;
-use EXME\Template\Parser\Contract\TokenValidatorInterface;
-use EXME\Template\Parser\Contract\ParserContextInterface;
+use EXME\Template\Lexer\Contract\TokenCollectionInterface;
 use EXME\Template\Parser\Contract\ParserInterface;
+use EXME\Template\Parser\Node\Contract\NodeFactoryInterface;
+use EXME\Template\Parser\Node\Contract\NodeInterface;
 
 final class Parser implements ParserInterface
 {
     public function __construct(
-        private TokenValidatorInterface $tokenValidator,
-        private HtmlResultBuilder $resultBuilder,
+        private NodeFactoryInterface $nodeFactory,
+        private ResultBuilder $resultBuilder,
     ){      
     }
 
-    public function parse(ParserContextInterface $ctx): HtmlInterface
+    public function parse(TokenCollectionInterface $tokens): NodeInterface
     {
-        $this->validateTokens($ctx);
-        return $this->resultBuilder->build($ctx);
+        $node = $this->nodeFactory->create($tokens);       
+        // return $this->resultBuilder->build($ast);
 
 
         // $this->position = 0;
@@ -70,17 +70,17 @@ final class Parser implements ParserInterface
         // );
     }
 
-    private function validateTokens(ParserContextInterface $ctx): void
-    {
-        $tokenValidator = $this->tokenValidator->setContext($ctx);
+    // private function validateTokens(TokenIteratorInterface $tokens): void
+    // {
+    //     $tokenValidator = $this->tokenValidator->setContext($ctx);
 
-        $tokenValidator->validate();
+    //     $tokenValidator->validate();
         
-        while ($ctx->hasNext()) {
-            $ctx->moveNext();
-            $tokenValidator->validate();
-        }
+    //     while ($ctx->hasNext()) {
+    //         $ctx->moveNext();
+    //         $tokenValidator->validate();
+    //     }
 
-        $ctx->reset();
-    }
+    //     $ctx->reset();
+    // }
 }

@@ -4,27 +4,31 @@ declare(strict_types=1);
 
 namespace EXME\Template\Lexer;
 
+use EXME\Template\Lexer\Contract\TokenCollectionInterface;
 use EXME\Template\Lexer\Tokenizer\TokenizerChain;
+use EXME\Template\Lexer\Validator\Contract\TokenValidatorInterface;
 
 final class Lexer
 {
     public function __construct(
         private TokenizerChain $chain,
+        private TokenValidatorInterface $tokenValidator,
     ) {}
 
-    public function tokenize(string $source, int $position = 0): array
+    public function tokenize(string $source, int $position = 0): TokenCollectionInterface
     {
         $context = new LexerContext(source: $source, position: $position);
         $tokens = [];
 
         while (!$context->isAtEnd()) {
             $token = $this->chain->tokenize($context);
+            $this->tokenValidator->validate($token, $tokens);
 
             if ($token->canTokenize) {
                 $childTokens = $this->tokenize($token->text);
                 $tokens = [ 
                     ...$tokens, 
-                    ...$this->recalculateChildTokensPosition($childTokens, $token->position)
+                    ...$this->recalculateChildTokensPosition($childTokens, $token->position)->toArray(),
                 ];
 
                 continue;
@@ -39,23 +43,22 @@ final class Lexer
             throw new \RuntimeException(sprintf('Unterminated component declaration at position %d', $context->position));
         }
 
-        return $tokens;
+        return new TokenCollection(...$tokens);
     }
 
-    private function recalculateChildTokensPosition(array $tokens, int $startPos): array
+    private function recalculateChildTokensPosition(TokenCollectionInterface $tokens, int $startPos): TokenCollectionInterface
     {
         $result = [];
 
-        $count = count($tokens);
-        for ($i = 0; $i < $count; $i++) {
-            $result[$i] = new Token(
-                type: $tokens[$i]->type,
-                text: $tokens[$i]->text,
-                position: $tokens[$i]->position + $startPos,
-                canTokenize: $tokens[$i]->canTokenize,
+        foreach ($tokens as $key => $token) {
+            $result[$key] = new Token(
+                type: $token->type,
+                text: $token->text,
+                position: $token->position + $startPos,
+                canTokenize: $token->canTokenize,
             ); 
         }
 
-        return $result;
+        return new TokenCollection(...$result);
     }
 }

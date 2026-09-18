@@ -14,6 +14,7 @@ namespace EXME\Template\Lexer;
  * - COMPONENT_OPEN
  * - COMPONENT_CLOSE
  * - COMPONENT_SELF_CLOSE
+ * - COMPONENT_NAME
  *
  * Component syntax tokens:
  * - IDENTIFIER
@@ -32,6 +33,8 @@ enum TokenType: string
     case COMPONENT_OPEN = 'component_open';
     case COMPONENT_CLOSE = 'component_close';
     case COMPONENT_SELF_CLOSE = 'component_self_close';
+    case COMPONENT_NAME = 'component_name';
+    case COMPONENT_CLOSING_TAG = 'component_closing_tag';
     
     case IDENTIFIER = 'identifier';
     case EQUALS = 'equals';

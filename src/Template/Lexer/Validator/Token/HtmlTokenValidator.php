@@ -2,29 +2,29 @@
 
 declare(strict_types=1);
 
-namespace EXME\Template\Parser\TokenValidator;
+namespace EXME\Template\Lexer\Validator\Token;
 
+use EXME\Template\Lexer\Token;
 use EXME\Template\Lexer\TokenType;
 
 class HtmlTokenValidator extends AbstractTokenValidator
 {
-    public function validate(): void
+    public function validate(Token $token, array $context): void
     {
-        $ctx = $this->getContext();
-
-        if (!$ctx->hasPrev()) {
+        if (!count($context)) {
             return;
         }
 
-        $prevTokenType = $ctx->prev()->type;
+        $prevToken = array_last($context);
 
-        if ($prevTokenType === TokenType::HTML) {
-            $this->expect([
+        if ($prevToken->type === TokenType::HTML) {
+            $this->expect(
+                $token,
                 TokenType::COMPONENT_OPEN,
                 TokenType::COMPONENT_CLOSE,
                 TokenType::PHP,
                 TokenType::TEXT  
-            ]);
+            );
         }
     }
 }

@@ -43,7 +43,7 @@ final class ComponentClosingTagTokenizer implements TokenizerInterface
         $context->moveNext();
 
         return new Token(
-            type: TokenType::COMPONENT_CLOSE,
+            type: TokenType::COMPONENT_CLOSING_TAG,
             text: substr($context->source, $position, $context->position - $position),
             position: $position,
         );
