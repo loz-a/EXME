@@ -6,13 +6,11 @@ namespace EXME\Template\Lexer;
 
 use EXME\Template\Lexer\Contract\TokenStreamInterface;
 use EXME\Template\Lexer\Tokenizer\TokenizerChain;
-use EXME\Template\Lexer\Validator\Contract\TokenValidatorInterface;
 
 final class Lexer
 {
     public function __construct(
         private TokenizerChain $chain,
-        private TokenValidatorInterface $tokenValidator,
     ) {}
 
     public function tokenize(string $source, int $position = 0): TokenStreamInterface
@@ -22,7 +20,6 @@ final class Lexer
 
         while (!$context->isAtEnd()) {
             $token = $this->chain->tokenize($context);
-            // $this->tokenValidator->validate($token, $tokens);
 
             if ($token->canTokenize) {
                 $childTokens = $this->tokenize($token->text);

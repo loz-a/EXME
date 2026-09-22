@@ -17,11 +17,6 @@ use EXME\Template\Lexer\Tokenizer\PhpTokenizer;
 use EXME\Template\Lexer\Tokenizer\StringTokenizer;
 use EXME\Template\Lexer\Tokenizer\TextTokenizer;
 use EXME\Template\Lexer\Tokenizer\TokenizerChain;
-use EXME\Template\Lexer\Validator\Token\ComponentTokenValidator;
-use EXME\Template\Lexer\Validator\Token\HtmlTokenValidator;
-use EXME\Template\Lexer\Validator\Token\PhpTokenValidator;
-use EXME\Template\Lexer\Validator\Token\TextTokenValidator;
-use EXME\Template\Lexer\Validator\TokenValidator;
 
 final class LexerFactory
 {
@@ -46,13 +41,6 @@ final class LexerFactory
             new TextTokenizer(),
         ]);
 
-        $tokenValidator = new TokenValidator(
-            new ComponentTokenValidator(),
-            new PhpTokenValidator(),
-            new HtmlTokenValidator(),
-            new TextTokenValidator(),
-        );
-
-        return new Lexer($tokenizer, $tokenValidator);
+        return new Lexer($tokenizer);
     }
 }
