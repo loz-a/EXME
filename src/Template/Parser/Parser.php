@@ -13,13 +13,13 @@ final class Parser implements ParserInterface
 {
     public function __construct(
         private NodeFactoryInterface $nodeFactory,
-        private ResultBuilder $resultBuilder,
+        // private ResultBuilder $resultBuilder,
     ){      
     }
 
     public function parse(TokenStreamInterface $tokens): NodeInterface
     {
-        $node = $this->nodeFactory->create($tokens);       
+        return $this->nodeFactory->create($tokens);       
         // return $this->resultBuilder->build($ast);
 
 

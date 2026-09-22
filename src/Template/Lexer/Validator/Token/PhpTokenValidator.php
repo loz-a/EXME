@@ -21,10 +21,13 @@ class PhpTokenValidator extends AbstractTokenValidator
             $this->expect(
                 $token,
                 TokenType::COMPONENT_OPEN,
+                TokenType::COMPONENT_CLOSING_TAG,
+                TokenType::COMPONENT_SELF_CLOSE,
                 TokenType::COMPONENT_CLOSE,
                 TokenType::IDENTIFIER,
                 TokenType::HTML,
-                TokenType::TEXT  
+                TokenType::TEXT,
+                TokenType::PHP,
             );
         }
     }

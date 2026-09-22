@@ -24,8 +24,13 @@ final readonly class Component implements NodeInterface
     public function __construct(
         public readonly string $name,
         public readonly array $attributes,
-        private ?NodeInterface $slot = null,
+        public readonly ?NodeInterface $slot = null,
     ){
+    }
+
+    public function hasAttributes(): bool
+    {
+        return count($this->attributes) !== 0;
     }
 
     public function render(): string

@@ -45,11 +45,22 @@ class ComponentTokenValidator extends AbstractTokenValidator
             TokenType::COMPONENT_SELF_CLOSE => $this->expect(
                 $token,
                 TokenType::COMPONENT_OPEN,
-                TokenType::COMPONENT_CLOSE,
+                TokenType::COMPONENT_CLOSING_TAG,
                 TokenType::HTML,
                 TokenType::PHP,
                 TokenType::TEXT                
-            ),            
+            ),
+
+            TokenType::COMPONENT_CLOSING_TAG => $this->expect(
+                $token,
+                TokenType::COMPONENT_CLOSING_TAG,
+                TokenType::COMPONENT_OPEN,
+                TokenType::HTML,
+                TokenType::PHP,
+                TokenType::TEXT, 
+            ),
+        
+            default => false
         };
     }
 }

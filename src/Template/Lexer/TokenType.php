@@ -28,18 +28,18 @@ namespace EXME\Template\Lexer;
  * - PHP
  */
 
-enum TokenType: string
+enum TokenType
 {
-    case COMPONENT_OPEN = 'component_open';
-    case COMPONENT_CLOSE = 'component_close';
-    case COMPONENT_SELF_CLOSE = 'component_self_close';
-    case COMPONENT_NAME = 'component_name';
-    case COMPONENT_CLOSING_TAG = 'component_closing_tag';
+    case COMPONENT_OPEN;
+    case COMPONENT_CLOSE;
+    case COMPONENT_SELF_CLOSE;
+    case COMPONENT_NAME;
+    case COMPONENT_CLOSING_TAG;
     
-    case IDENTIFIER = 'identifier';
-    case EQUALS = 'equals';
-    case TEXT = 'text';
+    case IDENTIFIER;
+    case EQUALS;
+    case TEXT;
     
-    case HTML = 'html';
-    case PHP = 'php';
+    case HTML;
+    case PHP;
 }

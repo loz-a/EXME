@@ -28,7 +28,6 @@ final class ComponentClosingTagTokenizer implements TokenizerInterface
         $position = $context->position;
 
         $context->moveNext(2);        
-        $context->skipWhitespace();
         
         $start = $context->position;
 
@@ -36,7 +35,7 @@ final class ComponentClosingTagTokenizer implements TokenizerInterface
             $context->moveNext();
         }
 
-        $context->skipWhitespace();
+        // $context->skipWhitespace();
 
         if ($context->current() !== '>') {
             throw new \RuntimeException(

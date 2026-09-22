@@ -13,7 +13,7 @@ final class ParserFactory
     {
         return new Parser(
             nodeFactory: new NodeFactory(),
-            resultBuilder: new ResultBuilder(),
+            // resultBuilder: new ResultBuilder(),
         );
     }
 }

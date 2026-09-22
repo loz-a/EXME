@@ -28,31 +28,40 @@ final class SimpleTokenizingTest extends TestCase
 
         self::assertCount(9, $tokens);
 
-        self::assertSame(TokenType::COMPONENT_OPEN, $tokens[0]->type);
-        self::assertSame('<', $tokens[0]->text);
+        $token = $tokens->dequeue();
+        self::assertSame(TokenType::COMPONENT_OPEN, $token->type);
+        self::assertSame('<', $token->text);
 
-        self::assertSame(TokenType::IDENTIFIER, $tokens[1]->type);
-        self::assertSame('Greeting', $tokens[1]->text);
+        $token = $tokens->dequeue();
+        self::assertSame(TokenType::COMPONENT_NAME, $token->type);
+        self::assertSame('Greeting', $token->text);
 
-        self::assertSame(TokenType::IDENTIFIER, $tokens[2]->type);
-        self::assertSame('name', $tokens[2]->text);
+        $token = $tokens->dequeue();
+        self::assertSame(TokenType::IDENTIFIER, $token->type);
+        self::assertSame('name', $token->text);
 
-        self::assertSame(TokenType::EQUALS, $tokens[3]->type);
-        self::assertSame('=', $tokens[3]->text);
+        $token = $tokens->dequeue();
+        self::assertSame(TokenType::EQUALS, $token->type);
+        self::assertSame('=', $token->text);
 
-        self::assertSame(TokenType::TEXT, $tokens[4]->type);
-        self::assertSame('Rasmus', $tokens[4]->text);
+        $token = $tokens->dequeue();
+        self::assertSame(TokenType::TEXT, $token->type);
+        self::assertSame('Rasmus', $token->text);
 
-        self::assertSame(TokenType::IDENTIFIER, $tokens[5]->type);
-        self::assertSame('type', $tokens[5]->text);
+        $token = $tokens->dequeue();
+        self::assertSame(TokenType::IDENTIFIER, $token->type);
+        self::assertSame('type', $token->text);
 
-        self::assertSame(TokenType::EQUALS, $tokens[6]->type);
-        self::assertSame('=', $tokens[6]->text);
+        $token = $tokens->dequeue();
+        self::assertSame(TokenType::EQUALS, $token->type);
+        self::assertSame('=', $token->text);
 
-        self::assertSame(TokenType::TEXT, $tokens[7]->type);
-        self::assertSame('guest', $tokens[7]->text);
+        $token = $tokens->dequeue();
+        self::assertSame(TokenType::TEXT, $token->type);
+        self::assertSame('guest', $token->text);
 
-        self::assertSame(TokenType::COMPONENT_SELF_CLOSE, $tokens[8]->type);
-        self::assertSame('/>', $tokens[8]->text);
+        $token = $tokens->dequeue();
+        self::assertSame(TokenType::COMPONENT_SELF_CLOSE, $token->type);
+        self::assertSame('/>', $token->text);
     }
 }

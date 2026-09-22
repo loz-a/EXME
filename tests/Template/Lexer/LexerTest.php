@@ -29,7 +29,7 @@ final class LexerTest extends TestCase
 
         self::assertSame($expectedTokens, array_map(
             static fn (Token $token): array => [$token->type, $token->text],
-            $tokens,
+            $tokens->toArray(),
         ));
     }
 
@@ -38,12 +38,13 @@ final class LexerTest extends TestCase
     {
         yield "component without attributes" => ["<Greeting />", [
             [TokenType::COMPONENT_OPEN, "<"],
-            [TokenType::IDENTIFIER, "Greeting"],
+            [TokenType::COMPONENT_NAME, "Greeting"],
             [TokenType::COMPONENT_SELF_CLOSE, "/>"],
         ]];
+
         yield "component with attributes" => ["<Greeting name=\"Rasmus\" type=\"guest\" />", [
             [TokenType::COMPONENT_OPEN, "<"],
-            [TokenType::IDENTIFIER, "Greeting"],
+            [TokenType::COMPONENT_NAME, "Greeting"],
             [TokenType::IDENTIFIER, "name"],
             [TokenType::EQUALS, "="],
             [TokenType::TEXT, "Rasmus"],

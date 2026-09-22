@@ -9,6 +9,8 @@ use EXME\Template\Lexer\Token;
 
 interface TokenStreamInterface extends Countable
 {
+    public function peek(): ?Token;
+
     public function dequeue(): Token;
 
     public function isEmpty(): bool;

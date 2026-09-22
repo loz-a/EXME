@@ -20,8 +20,11 @@ class TextTokenValidator extends AbstractTokenValidator
         if ($prevToken->type === TokenType::TEXT) {
             $this->expect(
                 $token,
+                TokenType::IDENTIFIER,
                 TokenType::COMPONENT_OPEN,
                 TokenType::COMPONENT_CLOSE,
+                TokenType::COMPONENT_SELF_CLOSE,
+                TokenType::COMPONENT_CLOSING_TAG,
                 TokenType::HTML,
                 TokenType::PHP,  
             );

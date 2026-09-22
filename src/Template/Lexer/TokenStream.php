@@ -20,13 +20,20 @@ final class TokenStream implements TokenStreamInterface
         $this->queue = new SplQueue();
         $this->enqueue($tokens);
     }
-
+    
     private function enqueue(array $tokens) 
     {
         foreach ($tokens as $token) {
             $this->queue->enqueue($token);
         }
     }
+
+    #[Override]
+    public function peek(): ?Token
+    {
+        return $this->queue->isEmpty() ? null : $this->queue->offsetGet(0);
+    }
+
 
     #[Override]
     public function dequeue(): Token

@@ -17,19 +17,18 @@ abstract class AbstractTokenValidator implements TokenValidatorInterface
      */
     abstract public function validate(Token $token, array $context): void;
 
-    protected function expect(Token $token, TokenType ...$expectedTypes): void
+    protected function expect(Token $token, TokenType ...$expectedTokenTypes): void
     {
-        $expected = array_map(
-            static fn (TokenType $type): string => $type->value,
-            $expectedTypes
+        $expectedTypes = array_map(
+            static fn (TokenType $type): string => $type->name,
+            $expectedTokenTypes
         );
 
-        throw new RuntimeException(
-            sprintf(
-                'Expected tokens are: %s, got %s',
-                implode(', ', $expected),
-                $token->type->value
-            )
-        );        
+        $isExpectationSuccessful = in_array($token->type->name, $expectedTypes);
+
+        if (!$isExpectationSuccessful) {
+            throw new RuntimeException(
+                sprintf('Expected tokens are: %s, got %s', implode(', ', $expectedTypes), $token->type->name));        
+        }
     }
 }

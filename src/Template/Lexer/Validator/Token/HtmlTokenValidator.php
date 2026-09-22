@@ -21,7 +21,7 @@ class HtmlTokenValidator extends AbstractTokenValidator
             $this->expect(
                 $token,
                 TokenType::COMPONENT_OPEN,
-                TokenType::COMPONENT_CLOSE,
+                TokenType::COMPONENT_CLOSING_TAG,
                 TokenType::PHP,
                 TokenType::TEXT  
             );
