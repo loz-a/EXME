@@ -39,6 +39,42 @@ final class LexerIntegrationTest extends TestCase
         yield 'many spaces' => ['<Submit     />'];
     }
 
+    public function testTokenizesComponentWithNumericAttributes(): void
+    {
+        $this->assertStream("<Greeting age=15 />", [
+            [TokenType::COMPONENT_OPEN->name, '<'],
+            [TokenType::COMPONENT_NAME->name, 'Greeting'],
+            [TokenType::IDENTIFIER->name, 'age'],
+            [TokenType::EQUALS->name, '='],
+            [TokenType::NUM->name, '15'],
+            [TokenType::COMPONENT_SELF_CLOSE->name, '/>'],
+        ]);
+    }
+
+    public function testTokenizesComponentWithNegativeNumericAttributes(): void
+    {
+        $this->assertStream("<Greeting age=-15 />", [
+            [TokenType::COMPONENT_OPEN->name, '<'],
+            [TokenType::COMPONENT_NAME->name, 'Greeting'],
+            [TokenType::IDENTIFIER->name, 'age'],
+            [TokenType::EQUALS->name, '='],
+            [TokenType::NUM->name, '-15'],
+            [TokenType::COMPONENT_SELF_CLOSE->name, '/>'],
+        ]);
+    }
+
+    public function testTokenizesComponentWithNegativeFloatAttributes(): void
+    {
+        $this->assertStream("<Greeting age=-15.05 />", [
+            [TokenType::COMPONENT_OPEN->name, '<'],
+            [TokenType::COMPONENT_NAME->name, 'Greeting'],
+            [TokenType::IDENTIFIER->name, 'age'],
+            [TokenType::EQUALS->name, '='],
+            [TokenType::NUM->name, '-15.05'],
+            [TokenType::COMPONENT_SELF_CLOSE->name, '/>'],
+        ]);
+    }
+
     public function testTokenizesComponentAttributesAcrossLines(): void
     {
         $this->assertStream("<Greeting\n    name=\"John\"\n    age=\"15\"\n    role=\"admin\"\n/>", [

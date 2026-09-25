@@ -12,6 +12,7 @@ use EXME\Template\Parser\Node\Attribute\Contract\AttributeValueInterface;
 use EXME\Template\Parser\Node\Attribute\Value\Composite;
 use EXME\Template\Parser\Node\Attribute\Value\PhpExpression as PhpExpressionValue;
 use EXME\Template\Parser\Node\Attribute\Value\Text as TextValue;
+use EXME\Template\Parser\Node\Attribute\Value\Numeric as NumValue;
 use InvalidArgumentException;
 
 final class AttributeFactory implements AttributeFactoryInterface
@@ -42,6 +43,7 @@ final class AttributeFactory implements AttributeFactoryInterface
         return match ($token->type) {
             TokenType::TEXT => new TextValue($token->text),
             TokenType::PHP => new PhpExpressionValue($token->text),
+            TokenType::NUM => new NumValue($token->text),
         };
     }
 }

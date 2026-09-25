@@ -6,7 +6,7 @@ namespace EXME\Tests\Template\Lexer\Tokenizer;
 
 use EXME\Template\Lexer\LexerContext;
 use EXME\Template\Lexer\LexerMode;
-use EXME\Template\Lexer\Tokenizer\ComponentSelfCloseTokenizer;
+use EXME\Template\Lexer\Tokenizer\Component\SelfCloseTokenizer;
 use PHPUnit\Framework\TestCase;
 
 final class ComponentSelfCloseTokenizerTest extends TestCase
@@ -18,7 +18,7 @@ final class ComponentSelfCloseTokenizerTest extends TestCase
         mode: LexerMode::COMPONENT,
     );
 
-    $tokenizer = new ComponentSelfCloseTokenizer();
+    $tokenizer = new SelfCloseTokenizer();
 
     $tokenizer->tokenize($context);
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EXME\Template\Lexer\Tokenizer;
+namespace EXME\Template\Lexer\Tokenizer\Component;
 
 use EXME\Template\Lexer\LexerContext;
 use EXME\Template\Lexer\LexerMode;
@@ -10,12 +10,12 @@ use EXME\Template\Lexer\Token;
 use EXME\Template\Lexer\TokenType;
 use EXME\Template\Lexer\Tokenizer\Contract\TokenizerInterface;
 
-final class ComponentSelfCloseTokenizer implements TokenizerInterface
+final class CloseTokenizer implements TokenizerInterface
 {
     public function supports(LexerContext $context): bool
     {
         return $context->mode === LexerMode::COMPONENT 
-            && $context->current() === '/';
+            && $context->current() === '>';
     }
 
     public function tokenize(LexerContext $context): Token
@@ -24,18 +24,11 @@ final class ComponentSelfCloseTokenizer implements TokenizerInterface
 
         $context->moveNext();
 
-        if ($context->current() !== '>') {
-            throw new \RuntimeException(
-                sprintf('Expected ">" after "/" at position %d', $position));
-        }
-
-        $context->moveNext();
-
         $context->mode = LexerMode::TEMPLATE;
 
         return new Token(
-            type: TokenType::COMPONENT_SELF_CLOSE,
-            text: '/>',
+            type: TokenType::COMPONENT_CLOSE,
+            text: '>',
             position: $position,
         );
     }

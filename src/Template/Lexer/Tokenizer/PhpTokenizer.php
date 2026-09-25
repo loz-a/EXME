@@ -14,7 +14,9 @@ final class PhpTokenizer implements TokenizerInterface
 {
     public function supports(LexerContext $context): bool
     {
-        $canBeTokenized = $context->mode === LexerMode::TEMPLATE || $context->mode === LexerMode::COMPONENT;
+        $canBeTokenized = $context->mode === LexerMode::TEMPLATE 
+                        || $context->mode === LexerMode::COMPONENT;
+                        
         return $canBeTokenized && $context->current() === '{';
     }
 

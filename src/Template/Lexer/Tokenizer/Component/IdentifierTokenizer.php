@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EXME\Template\Lexer\Tokenizer;
+namespace EXME\Template\Lexer\Tokenizer\Component;
 
 use EXME\Template\Lexer\LexerContext;
 use EXME\Template\Lexer\LexerMode;

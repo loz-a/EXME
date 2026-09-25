@@ -7,6 +7,7 @@ namespace EXMETests\Template\Parser;
 use EXME\Template\Lexer\Lexer;
 use EXME\Template\Lexer\LexerFactory;
 use EXME\Template\Parser\Node\Attribute\AttributeFactory;
+use EXME\Template\Parser\Node\Attribute\Contract\AttributeInterface;
 use EXME\Template\Parser\Node\Component;
 use EXME\Template\Parser\Node\Factory\NodeFactory;
 use EXME\Template\Parser\Node\Fragment;
@@ -113,19 +114,59 @@ final class ParserTest extends TestCase
         self::assertCount(2, $node->attributes);
     }
 
-    public function testParsesComponentWithVeryMixedAttributes(): void
+    public function testParsesComponentWithNumAttribute(): void
     {
         $tokens = $this
             ->lexer
             ->tokenize(
-                '<Greeting name="Rasmus" age={$age} type="Type {$type}" />',
+                '<Greeting age=15 />',
             );
 
         $node = $this->parser->parse($tokens);
 
         self::assertInstanceOf(Component::class, $node);
         self::assertSame('Greeting', $node->name);
-        self::assertCount(3, $node->attributes);
+        self::assertCount(1, $node->attributes);
+        self::assertArrayHasKey('age', $node->attributes);
+        self::assertInstanceOf(AttributeInterface::class, $node->attributes['age']);
+        self::assertEquals('\'age\' => 15', (string) $node->attributes['age']);
+    }
+
+    public function testParsesComponentWithNegativeFloatAttribute(): void
+    {
+        $tokens = $this
+            ->lexer
+            ->tokenize(
+                '<Greeting age=-15.05 />',
+            );
+
+        $node = $this->parser->parse($tokens);
+
+        self::assertInstanceOf(Component::class, $node);
+        self::assertSame('Greeting', $node->name);
+        self::assertCount(1, $node->attributes);
+        self::assertArrayHasKey('age', $node->attributes);
+        self::assertInstanceOf(AttributeInterface::class, $node->attributes['age']);
+        self::assertEquals('\'age\' => -15.05', (string) $node->attributes['age']);
+    }
+
+    public function testParsesComponentWithVeryMixedAttributes(): void
+    {
+        $tokens = $this
+            ->lexer
+            ->tokenize(
+                '<Greeting name="Rasmus" age={$age} type="Type {$type}" negative-number=-22.222 />',
+            );
+
+        $node = $this->parser->parse($tokens);
+
+        self::assertInstanceOf(Component::class, $node);
+        self::assertSame('Greeting', $node->name);
+        self::assertCount(4, $node->attributes);
+        self::assertEquals('\'name\' => \'Rasmus\'', (string) $node->attributes['name']);
+        self::assertEquals('\'age\' => $age', (string) $node->attributes['age']);
+        self::assertEquals('\'type\' => \'Type \' . $type', (string) $node->attributes['type']);
+        self::assertEquals('\'negative-number\' => -22.222', (string) $node->attributes['negative-number']);
     }
 
     public function testParsesComponentWithTextSlot(): void

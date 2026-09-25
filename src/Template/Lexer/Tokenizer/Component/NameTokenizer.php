@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EXME\Template\Lexer\Tokenizer;
+namespace EXME\Template\Lexer\Tokenizer\Component;
 
 use EXME\Template\Lexer\LexerContext;
 use EXME\Template\Lexer\LexerMode;
@@ -10,7 +10,7 @@ use EXME\Template\Lexer\Token;
 use EXME\Template\Lexer\TokenType;
 use EXME\Template\Lexer\Tokenizer\Contract\TokenizerInterface;
 
-final class ComponentNameTokenizer implements TokenizerInterface
+final class NameTokenizer implements TokenizerInterface
 {
     public function supports(LexerContext $context): bool
     {

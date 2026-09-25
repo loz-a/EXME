@@ -182,7 +182,10 @@ final class NodeFactory implements NodeFactoryInterface
             $valueToken = $tokens->peek();
             $valueTokensToAttributePass = [];
 
-            while ($valueToken->type === Type::TEXT || $valueToken->type === Type::PHP) {
+            while ($valueToken->type === Type::TEXT 
+                || $valueToken->type === Type::PHP
+                || $valueToken->type === Type::NUM
+            ){
                 $valueTokensToAttributePass[] = $tokens->dequeue();
                 $valueToken = $tokens->peek();
             }

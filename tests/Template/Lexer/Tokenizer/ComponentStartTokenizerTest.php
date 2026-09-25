@@ -6,7 +6,7 @@ namespace EXME\Tests\Template\Lexer\Tokenizer;
 
 use EXME\Template\Lexer\LexerContext;
 use EXME\Template\Lexer\LexerMode;
-use EXME\Template\Lexer\Tokenizer\ComponentStartTokenizer;
+use EXME\Template\Lexer\Tokenizer\Component\StartTokenizer;
 use PHPUnit\Framework\TestCase;
 
 final class ComponentStartTokenizerTest extends TestCase
@@ -18,7 +18,7 @@ final class ComponentStartTokenizerTest extends TestCase
             mode: LexerMode::TEMPLATE,
         );
 
-        $tokenizer = new ComponentStartTokenizer();
+        $tokenizer = new StartTokenizer();
 
         $tokenizer->tokenize($context);
 
