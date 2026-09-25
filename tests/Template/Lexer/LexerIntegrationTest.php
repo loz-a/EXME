@@ -254,8 +254,10 @@ final class LexerIntegrationTest extends TestCase
         $tokens = $this->lexer->tokenize($source)->toArray();
 
         $php = array_values(
-            array_filter($tokens, 
-            static fn (Token $token): bool => $token->type === TokenType::PHP)
+            array_filter(
+                $tokens, 
+                static fn (Token $token): bool => $token->type === TokenType::PHP
+            )
         )[0];
 
         self::assertSame(5, $php->position);

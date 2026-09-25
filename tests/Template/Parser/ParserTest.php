@@ -6,6 +6,7 @@ namespace EXMETests\Template\Parser;
 
 use EXME\Template\Lexer\Lexer;
 use EXME\Template\Lexer\LexerFactory;
+use EXME\Template\Parser\Node\Attribute\AttributeFactory;
 use EXME\Template\Parser\Node\Component;
 use EXME\Template\Parser\Node\Factory\NodeFactory;
 use EXME\Template\Parser\Node\Fragment;
@@ -24,7 +25,7 @@ final class ParserTest extends TestCase
         $this->lexer = new LexerFactory()->create();
 
         $this->parser = new Parser(
-            nodeFactory: new NodeFactory(),
+            nodeFactory: new NodeFactory(new AttributeFactory()),
         );
     }
 
@@ -67,7 +68,7 @@ final class ParserTest extends TestCase
         self::assertCount(2, $componentWithAttributes->attributes);
     }
 
-    public function testParsesComponentWithAttributes(): void
+    public function testParsesComponentWithTextAttributes(): void
     {
         $tokens = $this
             ->lexer
@@ -78,10 +79,53 @@ final class ParserTest extends TestCase
         $node = $this->parser->parse($tokens);
 
         self::assertInstanceOf(Component::class, $node);
-
         self::assertSame('Greeting', $node->name);
-
         self::assertCount(2, $node->attributes);
+    }
+
+    public function testParsesComponentWithPhpAttributes(): void
+    {
+        $tokens = $this
+            ->lexer
+            ->tokenize(
+                '<Greeting name={$name} type={$type} />',
+            );
+
+        $node = $this->parser->parse($tokens);
+
+        self::assertInstanceOf(Component::class, $node);
+        self::assertSame('Greeting', $node->name);
+        self::assertCount(2, $node->attributes);
+    }
+
+    public function testParsesComponentWithMixedAttributes(): void
+    {
+        $tokens = $this
+            ->lexer
+            ->tokenize(
+                '<Greeting name="Rasmus" type={$type} />',
+            );
+
+        $node = $this->parser->parse($tokens);
+
+        self::assertInstanceOf(Component::class, $node);
+        self::assertSame('Greeting', $node->name);
+        self::assertCount(2, $node->attributes);
+    }
+
+    public function testParsesComponentWithVeryMixedAttributes(): void
+    {
+        $tokens = $this
+            ->lexer
+            ->tokenize(
+                '<Greeting name="Rasmus" age={$age} type="Type {$type}" />',
+            );
+
+        $node = $this->parser->parse($tokens);
+
+        self::assertInstanceOf(Component::class, $node);
+        self::assertSame('Greeting', $node->name);
+        self::assertCount(3, $node->attributes);
     }
 
     public function testParsesComponentWithTextSlot(): void
@@ -95,9 +139,7 @@ final class ParserTest extends TestCase
         $node = $this->parser->parse($tokens);
 
         self::assertInstanceOf(Component::class, $node);
-
         self::assertInstanceOf(Fragment::class, $node->slot);
-
         self::assertEquals(new Text('Hello'), $node->slot->children[0]);
     }
 
@@ -116,9 +158,7 @@ final class ParserTest extends TestCase
         $user = $this->parser->parse($tokens);
 
         self::assertInstanceOf(Component::class, $user);
-
         self::assertSame('User', $user->name);
-
         self::assertInstanceOf(Fragment::class, $user->slot);
 
         /*

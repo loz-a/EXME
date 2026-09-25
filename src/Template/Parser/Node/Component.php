@@ -21,6 +21,11 @@ final readonly class Component implements NodeInterface
         );
     EOT;
 
+    /**
+     * @property string $name
+     * @property \EXME\Template\Parser\Node\Attribute\Contract\AttributeInterface[] $attributes
+     * @property NodeInterface|null $slot
+     */
     public function __construct(
         public readonly string $name,
         public readonly array $attributes,

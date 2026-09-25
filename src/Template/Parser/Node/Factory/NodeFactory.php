@@ -7,6 +7,7 @@ namespace EXME\Template\Parser\Node\Factory;
 use EXME\Template\Lexer\Contract\TokenStreamInterface;
 use EXME\Template\Lexer\Token;
 use EXME\Template\Lexer\TokenType as Type;
+use EXME\Template\Parser\Node\Attribute\Contract\AttributeFactoryInterface;
 use EXME\Template\Parser\Node\Component;
 use EXME\Template\Parser\Node\Contract\NodeFactoryInterface;
 use EXME\Template\Parser\Node\Contract\NodeInterface;
@@ -20,6 +21,11 @@ use function sprintf;
 
 final class NodeFactory implements NodeFactoryInterface
 {
+    public function __construct(
+        private AttributeFactoryInterface $attributeFactory,
+    ){
+    }
+
     public function create(TokenStreamInterface $tokens): NodeInterface
     {
         // $nodes = $this->parseNodes($tokens);
@@ -172,27 +178,33 @@ final class NodeFactory implements NodeFactoryInterface
             }
 
             $this->expect($tokens, Type::EQUALS);
-
+            
             $valueToken = $tokens->peek();
+            $valueTokensToAttributePass = [];
 
-            if ($valueToken === null) {
+            while ($valueToken->type === Type::TEXT || $valueToken->type === Type::PHP) {
+                $valueTokensToAttributePass[] = $tokens->dequeue();
+                $valueToken = $tokens->peek();
+            }
+
+            if (empty($valueTokensToAttributePass)) {
                 throw new RuntimeException(
                     sprintf('Expected value for component attribute "%s".', $attributeName));
             }
 
-            $invalidValueType = $valueToken->type !== Type::TEXT && $valueToken->type !== Type::PHP;
+            // if ($invalidValueType) {
+            //     throw new RuntimeException(
+            //         sprintf('Expected attribute value for "%s", got %s at position %d.',
+            //             $attributeName,
+            //             $valueToken->type->value,
+            //             $valueToken->position,
+            //         ),
+            //     );
+            // }
 
-            if ($invalidValueType) {
-                throw new RuntimeException(
-                    sprintf('Expected attribute value for "%s", got %s at position %d.',
-                        $attributeName,
-                        $valueToken->type->value,
-                        $valueToken->position,
-                    ),
-                );
-            }
+            $attributeValue = $this->attributeFactory->create($attributeName, ...$valueTokensToAttributePass);
 
-            $attributes[$attributeName] = $tokens->dequeue()->text;
+            $attributes[$attributeName] = $attributeValue;
         }
 
         return $attributes;
