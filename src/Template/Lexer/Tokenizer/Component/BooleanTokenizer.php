@@ -26,9 +26,10 @@ final class BooleanTokenizer implements TokenizerInterface
         $isTrue = $context->startsWith('true', isCaseInsensitive: true);
         $context->moveNext($isTrue ? 4 : 5);
 
-        if ($context->isAtEnd()) {
+        $isTrailingSpace = ctype_space($context->current()); 
+        if (!$isTrailingSpace) {
             throw new \RuntimeException(
-                sprintf('Unterminated string at position %d', $position));
+                sprintf('Expected a space after the %s argument value.', $isTrue ? 'true' : 'false'));
         }
 
         return new Token(

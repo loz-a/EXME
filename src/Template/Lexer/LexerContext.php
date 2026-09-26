@@ -27,7 +27,7 @@ final class LexerContext
         return $this->source[$this->position + $offset] ?? null;
     }
 
-    public function startsWith(string $value, $isCaseInsensitive = false): bool
+    public function startsWith(string $value, bool $isCaseInsensitive = false): bool
     {
         if ($isCaseInsensitive) {
             return strtolower(substr($this->source, $this->position, strlen($value))) === strtolower($value);

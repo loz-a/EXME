@@ -28,8 +28,7 @@ final class NumberTokenizer implements TokenizerInterface
 
     public function tokenize(LexerContext $context): Token
     {
-        $position = $context->position;
-        $start = $context->position;
+        $position = $start = $context->position;
         
         $isNegative = $context->current() === '-';
         if ($isNegative) {
@@ -42,9 +41,10 @@ final class NumberTokenizer implements TokenizerInterface
             $context->moveNext();
         }
 
-        if ($context->isAtEnd()) {
+        $isTrailingSpace = ctype_space($context->current()); 
+        if (!$isTrailingSpace) {
             throw new \RuntimeException(
-                sprintf('Unterminated numeric at position %d', $position));
+                'Expected a space after the numeric argument value.');
         }
 
         $text = substr(
