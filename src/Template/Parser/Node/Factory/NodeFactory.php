@@ -178,11 +178,6 @@ final class NodeFactory implements NodeFactoryInterface
                     ),
                 );
             }
-
-            if ($this->isImplicitTrueValue($tokens)) {
-                $attributes[$attributeName] = new Attribute($attributeName, new BoolAttributeValue(true));
-                continue;
-            }
                 
             $this->expect($tokens, Type::EQUALS);
                 
@@ -275,17 +270,5 @@ final class NodeFactory implements NodeFactoryInterface
         }
 
         return $token;
-    }
-
-    private function isImplicitTrueValue(TokenStreamInterface $tokens): bool
-    {
-        $currentTokenType = $tokens->peek()->type->name;
-
-        return match ($currentTokenType) {
-            Type::IDENTIFIER,
-            Type::COMPONENT_CLOSE,
-            Type::COMPONENT_SELF_CLOSE => true,
-            default => false,
-        };
     }
 }
