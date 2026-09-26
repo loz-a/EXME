@@ -9,6 +9,7 @@ use EXME\Template\Lexer\TokenType;
 use EXME\Template\Parser\Node\Attribute\Contract\AttributeFactoryInterface;
 use EXME\Template\Parser\Node\Attribute\Contract\AttributeInterface;
 use EXME\Template\Parser\Node\Attribute\Contract\AttributeValueInterface;
+use EXME\Template\Parser\Node\Attribute\Value\Boolean;
 use EXME\Template\Parser\Node\Attribute\Value\Composite;
 use EXME\Template\Parser\Node\Attribute\Value\PhpExpression as PhpExpressionValue;
 use EXME\Template\Parser\Node\Attribute\Value\Text as TextValue;
@@ -44,6 +45,7 @@ final class AttributeFactory implements AttributeFactoryInterface
             TokenType::TEXT => new TextValue($token->text),
             TokenType::PHP => new PhpExpressionValue($token->text),
             TokenType::NUM => new NumValue($token->text),
+            TokenType::BOOL => new Boolean($token->text === 'true' ? true : false),
         };
     }
 }

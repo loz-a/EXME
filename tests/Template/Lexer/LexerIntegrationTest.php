@@ -39,9 +39,9 @@ final class LexerIntegrationTest extends TestCase
         yield 'many spaces' => ['<Submit     />'];
     }
 
-    public function testTokenizesComponentWithNumericAttributes(): void
+    public function testTokenizesComponentWithNumericAttribute(): void
     {
-        $this->assertStream("<Greeting age=15 />", [
+        $this->assertStream('<Greeting age=15 />', [
             [TokenType::COMPONENT_OPEN->name, '<'],
             [TokenType::COMPONENT_NAME->name, 'Greeting'],
             [TokenType::IDENTIFIER->name, 'age'],
@@ -51,9 +51,9 @@ final class LexerIntegrationTest extends TestCase
         ]);
     }
 
-    public function testTokenizesComponentWithNegativeNumericAttributes(): void
+    public function testTokenizesComponentWithNegativeNumericAttribute(): void
     {
-        $this->assertStream("<Greeting age=-15 />", [
+        $this->assertStream('<Greeting age=-15 />', [
             [TokenType::COMPONENT_OPEN->name, '<'],
             [TokenType::COMPONENT_NAME->name, 'Greeting'],
             [TokenType::IDENTIFIER->name, 'age'],
@@ -63,14 +63,36 @@ final class LexerIntegrationTest extends TestCase
         ]);
     }
 
-    public function testTokenizesComponentWithNegativeFloatAttributes(): void
+    public function testTokenizesComponentWithNegativeFloatAttribute(): void
     {
-        $this->assertStream("<Greeting age=-15.05 />", [
+        $this->assertStream('<Greeting age=-15.05 />', [
             [TokenType::COMPONENT_OPEN->name, '<'],
             [TokenType::COMPONENT_NAME->name, 'Greeting'],
             [TokenType::IDENTIFIER->name, 'age'],
             [TokenType::EQUALS->name, '='],
             [TokenType::NUM->name, '-15.05'],
+            [TokenType::COMPONENT_SELF_CLOSE->name, '/>'],
+        ]);
+    }
+
+    public function testTokenizesComponentWithBooleanFalseAttribute(): void
+    {
+        $this->assertStream('<User isAdmin=false />', [
+            [TokenType::COMPONENT_OPEN->name, '<'],
+            [TokenType::COMPONENT_NAME->name, 'User'],
+            [TokenType::IDENTIFIER->name, 'isAdmin'],
+            [TokenType::EQUALS->name, '='],
+            [TokenType::BOOL->name, 'false'],
+            [TokenType::COMPONENT_SELF_CLOSE->name, '/>'],
+        ]);
+    }
+
+    public function testTokenizesComponentWithBooleanTrueAttribute(): void
+    {
+        $this->assertStream('<User isAdmin />', [
+            [TokenType::COMPONENT_OPEN->name, '<'],
+            [TokenType::COMPONENT_NAME->name, 'User'],
+            [TokenType::IDENTIFIER->name, 'isAdmin'],
             [TokenType::COMPONENT_SELF_CLOSE->name, '/>'],
         ]);
     }

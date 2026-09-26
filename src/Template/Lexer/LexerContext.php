@@ -7,6 +7,7 @@ namespace EXME\Template\Lexer;
 use function substr;
 use function strlen;
 use function ctype_space;
+use function strtolower;
 
 final class LexerContext
 {
@@ -26,8 +27,12 @@ final class LexerContext
         return $this->source[$this->position + $offset] ?? null;
     }
 
-    public function startsWith(string $value): bool
+    public function startsWith(string $value, $isCaseInsensitive = false): bool
     {
+        if ($isCaseInsensitive) {
+            return strtolower(substr($this->source, $this->position, strlen($value))) === strtolower($value);
+        }
+            
         return substr($this->source, $this->position, strlen($value)) === $value;
     }
 
@@ -38,6 +43,13 @@ final class LexerContext
 
     public function moveNext(int $steps = 1): void
     {
+        $invalidPosition = ($this->position + $steps) > strlen($this->source);
+        
+        if ($invalidPosition) {
+            throw new \RuntimeException(
+                'Trying to reach a position beyond the end of the source.');
+        }
+
         $this->position += $steps;
     }
 

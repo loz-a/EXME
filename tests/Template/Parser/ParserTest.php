@@ -150,23 +150,42 @@ final class ParserTest extends TestCase
         self::assertEquals('\'age\' => -15.05', (string) $node->attributes['age']);
     }
 
+    public function testParsesComponentWithBoolFalseAttribute(): void
+    {
+        $tokens = $this
+            ->lexer
+            ->tokenize(
+                '<User isAdmin=false />',
+            );
+
+        $node = $this->parser->parse($tokens);
+
+        self::assertInstanceOf(Component::class, $node);
+        self::assertSame('User', $node->name);
+        self::assertCount(1, $node->attributes);
+        self::assertArrayHasKey('isAdmin', $node->attributes);
+        self::assertInstanceOf(AttributeInterface::class, $node->attributes['isAdmin']);
+        self::assertEquals('\'isAdmin\' => false', (string) $node->attributes['isAdmin']);
+    }
+
     public function testParsesComponentWithVeryMixedAttributes(): void
     {
         $tokens = $this
             ->lexer
             ->tokenize(
-                '<Greeting name="Rasmus" age={$age} type="Type {$type}" negative-number=-22.222 />',
+                '<Greeting name="Rasmus" age={$age} type="Type {$type}" negative-number=-22.222 isFoo=true />',
             );
 
         $node = $this->parser->parse($tokens);
 
         self::assertInstanceOf(Component::class, $node);
         self::assertSame('Greeting', $node->name);
-        self::assertCount(4, $node->attributes);
+        self::assertCount(5, $node->attributes);
         self::assertEquals('\'name\' => \'Rasmus\'', (string) $node->attributes['name']);
         self::assertEquals('\'age\' => $age', (string) $node->attributes['age']);
         self::assertEquals('\'type\' => \'Type \' . $type', (string) $node->attributes['type']);
         self::assertEquals('\'negative-number\' => -22.222', (string) $node->attributes['negative-number']);
+        self::assertEquals('\'isFoo\' => true', (string) $node->attributes['isFoo']);
     }
 
     public function testParsesComponentWithTextSlot(): void

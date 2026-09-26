@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EXME\Template\Lexer;
 
 use EXME\Template\Lexer\Lexer;
+use EXME\Template\Lexer\Tokenizer\Component\BooleanTokenizer;
 use EXME\Template\Lexer\Tokenizer\Component\CloseTokenizer;
 use EXME\Template\Lexer\Tokenizer\Component\SelfCloseTokenizer;
 use EXME\Template\Lexer\Tokenizer\Component\StartTokenizer;
@@ -35,6 +36,7 @@ final class LexerFactory
             new HtmlTokenizer(),
             
             new EqualsTokenizer(),
+            new BooleanTokenizer(),
             new NumberTokenizer(),
             new StringTokenizer(),
             new IdentifierTokenizer(),

@@ -7,7 +7,9 @@ namespace EXME\Template\Parser\Node\Factory;
 use EXME\Template\Lexer\Contract\TokenStreamInterface;
 use EXME\Template\Lexer\Token;
 use EXME\Template\Lexer\TokenType as Type;
+use EXME\Template\Parser\Node\Attribute\Attribute;
 use EXME\Template\Parser\Node\Attribute\Contract\AttributeFactoryInterface;
+use EXME\Template\Parser\Node\Attribute\Value\Boolean as BoolAttributeValue;
 use EXME\Template\Parser\Node\Component;
 use EXME\Template\Parser\Node\Contract\NodeFactoryInterface;
 use EXME\Template\Parser\Node\Contract\NodeInterface;
@@ -177,14 +179,20 @@ final class NodeFactory implements NodeFactoryInterface
                 );
             }
 
+            if ($this->isImplicitTrueValue($tokens)) {
+                $attributes[$attributeName] = new Attribute($attributeName, new BoolAttributeValue(true));
+                continue;
+            }
+                
             $this->expect($tokens, Type::EQUALS);
-            
+                
             $valueToken = $tokens->peek();
             $valueTokensToAttributePass = [];
 
             while ($valueToken->type === Type::TEXT 
                 || $valueToken->type === Type::PHP
                 || $valueToken->type === Type::NUM
+                || $valueToken->type === Type::BOOL
             ){
                 $valueTokensToAttributePass[] = $tokens->dequeue();
                 $valueToken = $tokens->peek();
@@ -267,5 +275,17 @@ final class NodeFactory implements NodeFactoryInterface
         }
 
         return $token;
+    }
+
+    private function isImplicitTrueValue(TokenStreamInterface $tokens): bool
+    {
+        $currentTokenType = $tokens->peek()->type->name;
+
+        return match ($currentTokenType) {
+            Type::IDENTIFIER,
+            Type::COMPONENT_CLOSE,
+            Type::COMPONENT_SELF_CLOSE => true,
+            default => false,
+        };
     }
 }

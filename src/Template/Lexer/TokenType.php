@@ -40,6 +40,7 @@ enum TokenType
     case EQUALS;
     case TEXT;
     case NUM;
+    case BOOL;
     
     case HTML;
     case PHP;
