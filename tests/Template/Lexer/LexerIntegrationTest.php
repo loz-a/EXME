@@ -89,10 +89,21 @@ final class LexerIntegrationTest extends TestCase
 
     public function testTokenizesComponentWithBooleanTrueAttribute(): void
     {
-        $this->assertStream('<User isAdmin />', [
+        $this->assertStream('<User isAdmin=True isCustomer=TRUE isFoo=False isFaa=FALSE />', [
             [TokenType::COMPONENT_OPEN->name, '<'],
             [TokenType::COMPONENT_NAME->name, 'User'],
             [TokenType::IDENTIFIER->name, 'isAdmin'],
+            [TokenType::EQUALS->name, '='],
+            [TokenType::BOOL->name, 'true'],
+            [TokenType::IDENTIFIER->name, 'isCustomer'],
+            [TokenType::EQUALS->name, '='],
+            [TokenType::BOOL->name, 'true'],
+            [TokenType::IDENTIFIER->name, 'isFoo'],
+            [TokenType::EQUALS->name, '='],
+            [TokenType::BOOL->name, 'false'],
+            [TokenType::IDENTIFIER->name, 'isFaa'],
+            [TokenType::EQUALS->name, '='],
+            [TokenType::BOOL->name, 'false'],
             [TokenType::COMPONENT_SELF_CLOSE->name, '/>'],
         ]);
     }
