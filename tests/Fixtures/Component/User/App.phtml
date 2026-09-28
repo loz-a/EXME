@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace EXME\Tests\Fixtures\Component\User;
+
+use EXME\Component\Contract\ComponentInterface;
+use Override;
+
+final class App implements ComponentInterface
+{
+    public function __construct(private DataProvider $dataProvider)
+    {
+    }
+
+    #[Override]
+    public function render(): string
+    {
+        $data = $this->dataProvider->getData()[0];
+        return <<<'EOT'
+            <div id="app">
+                <Profile firstname={$data['firstname']}
+                         lastname={$data['lastname']}
+                         age = $data['age']
+                         sex = $data['sex'] />
+            
+            EOT;
+    }  
+}

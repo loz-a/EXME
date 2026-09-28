@@ -7,9 +7,7 @@ namespace EXME\Template\Parser\Node\Factory;
 use EXME\Template\Lexer\Contract\TokenStreamInterface;
 use EXME\Template\Lexer\Token;
 use EXME\Template\Lexer\TokenType as Type;
-use EXME\Template\Parser\Node\Attribute\Attribute;
 use EXME\Template\Parser\Node\Attribute\Contract\AttributeFactoryInterface;
-use EXME\Template\Parser\Node\Attribute\Value\Boolean as BoolAttributeValue;
 use EXME\Template\Parser\Node\Component;
 use EXME\Template\Parser\Node\Contract\NodeFactoryInterface;
 use EXME\Template\Parser\Node\Contract\NodeInterface;
@@ -30,8 +28,6 @@ final class NodeFactory implements NodeFactoryInterface
 
     public function create(TokenStreamInterface $tokens): NodeInterface
     {
-        // $nodes = $this->parseNodes($tokens);
-
         $nodes = [];
         while (!$tokens->isEmpty()) {
             $nodes[] = $this->parseNode($tokens);

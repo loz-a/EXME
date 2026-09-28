@@ -1,0 +1,31 @@
+<?php
+
+declare(strict_types=1);
+
+namespace EXME\Tests\Fixtures\Component\User;
+
+use EXME\Component\Contract\ComponentInterface;
+use Override;
+
+final readonly class Profile implements ComponentInterface
+{
+    public function __construct(
+        public string $firstname,
+        public string $lastname,
+        public int $age,
+        public string $sex,
+    ){
+    }
+
+    #[Override]
+    public function render(): string
+    {
+        return 
+            '<ul>
+                <li>First Name: {$firstname}</li>
+                <li>Last Name: {$lastname}</li>
+                <li>Age: {$age}</li>
+                <li>sex: {$sex}</li>
+            </ul>';
+    }
+}

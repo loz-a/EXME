@@ -6,7 +6,11 @@ namespace EXME\Component;
 
 final class Renderer
 {
-    public function render($node): string
+    public function render(
+        string $componentName,
+        array $attributes,
+        callable $slot
+    ): string
     {
         $class = $node->name;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EXMETests\Template\Lexer\Tokenizer;
+namespace EXME\Tests\Unit\Template\Lexer\Tokenizer;
 
 use EXME\Template\Lexer\Lexer;
 use EXME\Template\Lexer\LexerFactory;

@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace EXME\Tests\Fixtures\Component\Login;
+
+use EXME\Component\Contract\ComponentInterface;
+use Override;
+
+final class LoginForm implements ComponentInterface
+{
+    #[Override]
+    public function render(): string
+    {
+        return '
+            <form>
+                <label for="uname">Username</label>
+                <input type="text" name="uname" required>
+
+                <label for="paswd">Password</label>
+                <input type="password" name="passwd" required>
+
+                <button type="submit">Login</button>
+            </form>
+        ';  
+    }
+}

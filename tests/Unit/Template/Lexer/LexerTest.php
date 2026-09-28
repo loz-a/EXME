@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EXME\Tests\Template\Lexer;
+namespace EXME\Tests\Unit\Template\Lexer;
 
 use EXME\Template\Lexer\Lexer;
 use EXME\Template\Lexer\LexerFactory;

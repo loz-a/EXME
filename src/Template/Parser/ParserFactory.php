@@ -16,7 +16,6 @@ final class ParserFactory
 
         return new Parser(
             nodeFactory: new NodeFactory($attributeFactory),
-            // resultBuilder: new ResultBuilder(),
         );
     }
 }
