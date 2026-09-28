@@ -15,5 +15,10 @@ interface TokenStreamInterface extends Countable
 
     public function isEmpty(): bool;
 
+    /**
+     * Materializes the remaining tokens.
+     *
+     * @return list<Token>
+     */
     public function toArray(): array;
 }
