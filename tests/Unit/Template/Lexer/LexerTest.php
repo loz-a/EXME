@@ -60,7 +60,7 @@ final class LexerTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageIsOrContains($message);
-        $this->lexer->tokenize($template)->toArray();
+        $this->lexer->tokenize($template);
     }
 
     /** @return iterable<string, array{string, string}> */

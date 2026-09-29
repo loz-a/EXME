@@ -338,7 +338,7 @@ final class LexerIntegrationTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessageIsOrContains($message);
-        $this->lexer->tokenize($source)->toArray();
+        $this->lexer->tokenize($source);
     }
 
     public static function invalidTemplateProvider(): iterable

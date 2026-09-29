@@ -6,7 +6,6 @@ namespace EXME\Template\Lexer;
 
 use EXME\Template\Lexer\Contract\TokenStreamInterface;
 use EXME\Template\Lexer\Tokenizer\TokenizerChain;
-use Generator;
 
 final class Lexer
 {
@@ -16,24 +15,18 @@ final class Lexer
 
     public function tokenize(string $source, int $position = 0): TokenStreamInterface
     {
-        return TokenStream::fromIterator($this->generateTokens($source, $position));
-    }
-
-    /**
-     * @return Generator<int, Token>
-     */
-    private function generateTokens(string $source, int $position = 0, int $positionOffset = 0): Generator
-    {
         $context = new LexerContext(source: $source, position: $position);
+        $tokens = [];
 
         while (!$context->isAtEnd()) {
             $token = $this->chain->tokenize($context);
 
             if ($token->canTokenize) {
-                yield from $this->generateTokens(
-                    source: $token->text,
-                    positionOffset: $token->position + $positionOffset,
-                );
+                $childTokens = $this->tokenize($token->text);
+                $tokens = [ 
+                    ...$tokens, 
+                    ...$this->recalculateChildTokensPosition($childTokens->toArray(), $token->position),
+                ];
 
                 continue;
             }
@@ -42,28 +35,29 @@ final class Lexer
                 continue;
             }
 
-            yield $this->offsetPosition($token, $positionOffset);
+            $tokens[] = $token;
         }
 
         if ($context->mode === LexerMode::COMPONENT) {
-            throw new \RuntimeException(sprintf(
-                'Unterminated component declaration at position %d',
-                $context->position + $positionOffset,
-            ));
+            throw new \RuntimeException(sprintf('Unterminated component declaration at position %d', $context->position));
         }
+
+        return new TokenStream(...$tokens);
     }
 
-    private function offsetPosition(Token $token, int $positionOffset): Token
+    private function recalculateChildTokensPosition(array $tokens, int $startPos): array
     {
-        if ($positionOffset === 0) {
-            return $token;
+        $result = [];
+
+        foreach ($tokens as $token) {
+            $result[] = new Token(
+                type: $token->type,
+                text: $token->text,
+                position: $token->position + $startPos,
+                canTokenize: $token->canTokenize,
+            ); 
         }
 
-        return new Token(
-            type: $token->type,
-            text: $token->text,
-            position: $token->position + $positionOffset,
-            canTokenize: $token->canTokenize,
-        );
+        return $result;
     }
 }

@@ -26,20 +26,11 @@ final class LexerContractTest extends TestCase
 
         self::assertNotEmpty($tokens);
 
-        $actualTokens = [];
-        while (!$tokens->isEmpty()) {
-            $token = $tokens->dequeue();
-            $actualTokens[] = $token;
-            $offset = match ($token->type) {
-                TokenType::PHP => 1,
-                TokenType::COMPONENT_CLOSING_TAG => 2,
-                default => 0,
-            };
+        foreach ($tokens as $token) {
+            $offset = $token->type === TokenType::PHP ? 1 : 0;
             self::assertGreaterThanOrEqual(0, $token->position);
             self::assertSame($token->text, substr($source, $token->position + $offset, strlen($token->text)));
         }
-
-        self::assertNotEmpty($actualTokens);
     }
 
     public function testPhpTokenPositionIsItsOpeningBrace(): void
