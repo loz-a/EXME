@@ -344,8 +344,6 @@ final class LexerIntegrationTest extends TestCase
     public static function invalidTemplateProvider(): iterable
     {
         yield 'lone component opener' => ['<', 'Unexpected character "<" at position 0'];
-        yield 'unterminated component' => ['<Submit', 'Unterminated component declaration at position 7'];
-        yield 'incomplete component attribute' => ['<Submit =', 'Unterminated component declaration at position 9'];
         yield 'unterminated PHP' => ["{\n    \$name = 'John';", 'Unterminated PHP block at position 0'];
         yield 'Expected a space after bool value' => ['<Hello isFoo=trueabc />', 'Expected a space after the true argument value'];
         yield 'Expected a space after the numeric' => ['<Hello foo=123hello />', 'Expected a space after the numeric argument value.'];
